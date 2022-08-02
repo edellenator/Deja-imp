@@ -9,7 +9,8 @@ const LoginForm = () => {
     setUserFormData({ ...userFormData, [name]: value });
   };
 
-  const handleFormSubmit = async (e) => {
+  const handleFormSubmit = async (event) => {
+    event.preventDefault;
     setShowAlert(true);
     setUserFormData({ username: "", password: "" });
   };

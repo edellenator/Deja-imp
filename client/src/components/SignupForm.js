@@ -34,14 +34,15 @@ const SignUpForm = () => {
     }
   };
 
-  const handleFormSubmit = async (e) => {
+  const handleFormSubmit = async (event) => {
+    event.preventDefault;
     setUserFormData({ email: "", username: "", password: "" });
   };
 
   const { email, username, password } = userFormData;
 
   return (
-    <form onSubmit={handleFormSubmit} className=" container w-50">
+    <form onSubmit={handleFormSubmit} className=" container w-50 my-3">
       <h2>Sign Up</h2>
       <label htmlFor="email" className="form-label">
         Email:

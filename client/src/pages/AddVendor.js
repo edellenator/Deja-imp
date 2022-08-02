@@ -18,11 +18,13 @@ const AddVendor = () => {
     const { name, value } = event.target;
     setVendorFormData({
       ...vendorFormData,
-      [event.target.name]: event.target.value,
+      [name]: value,
     });
     console.log(vendorFormData);
   };
-  const handleSubmit = (event) => {};
+  const handleSubmit = async (event) => {
+    event.preventDefault;
+  };
 
   const {
     vendorName,
@@ -72,7 +74,7 @@ const AddVendor = () => {
           <input
             className="form-input"
             name="email"
-            type="text"
+            type="email"
             value={email}
             onChange={handleChange}
           />
@@ -82,7 +84,7 @@ const AddVendor = () => {
           <input
             className="form-input"
             name="phone"
-            type="text"
+            type="tel"
             value={phone}
             onChange={handleChange}
           />
@@ -138,7 +140,7 @@ const AddVendor = () => {
             onChange={handleChange}
           />
           <button type="submit" className="btn">
-            Add
+            Add Vendor
           </button>
         </div>
       </div>

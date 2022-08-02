@@ -1,7 +1,7 @@
 import React from "react";
 
 const Users = () => {
-  // temporary data
+  // temporary test data
   const me = {
     username: "USERNAME",
     email: "user@email.com",
