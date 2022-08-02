@@ -1,4 +1,5 @@
 import React from "react";
+import "./App.css";
 import {
   ApolloProvider,
   ApolloClient,
@@ -6,7 +7,10 @@ import {
   createHttpLink,
 } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Home from "./pages/Home";
+import Header from "./components/Header";
+import Register from "./pages/Register";
 
 const httpLink = createHttpLink({
   uri: "/graphql",
@@ -30,7 +34,16 @@ const client = new ApolloClient({
 function App() {
   return (
     <ApolloProvider client={client}>
-      <h1>DEJA imp</h1>
+      <Router>
+        <>
+          <Header />
+
+          <Routes>
+            <Route path="/" element={<Home />}></Route>
+            <Route path="/login" element={<Register />}></Route>
+          </Routes>
+        </>
+      </Router>
     </ApolloProvider>
   );
 }
