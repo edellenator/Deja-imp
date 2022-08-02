@@ -11,6 +11,8 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import Header from "./components/Header";
 import Register from "./pages/Register";
+import Users from "./pages/Users";
+import AddVendor from "./pages/AddVendor";
 
 const httpLink = createHttpLink({
   uri: "/graphql",
@@ -39,8 +41,10 @@ function App() {
           <Header />
 
           <Routes>
-            <Route path="/" element={<Home />}></Route>
-            <Route path="/login" element={<Register />}></Route>
+            <Route path="/" element={<Home />} />
+            <Route path="/login" element={<Register />} />
+            <Route path="/users" element={<Users />} />
+            <Route path="/new-vendor" element={<AddVendor />} />
           </Routes>
         </>
       </Router>

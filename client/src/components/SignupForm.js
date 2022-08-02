@@ -38,6 +38,8 @@ const SignUpForm = () => {
     setUserFormData({ email: "", username: "", password: "" });
   };
 
+  const { email, username, password } = userFormData;
+
   return (
     <form onSubmit={handleFormSubmit} className=" container w-50">
       <h2>Sign Up</h2>
@@ -50,7 +52,7 @@ const SignUpForm = () => {
         placeholder="email"
         type="email"
         onBlur={handleInputChange}
-        defaultValue={userFormData.email}
+        defaultValue={email}
       />
       <label htmlFor="username" className="form-label">
         Username:
@@ -61,7 +63,7 @@ const SignUpForm = () => {
         placeholder="username"
         type="text"
         onBlur={handleInputChange}
-        defaultValue={userFormData.username}
+        defaultValue={username}
       />
       <label htmlFor="password" className="form-label">
         Password:
@@ -72,7 +74,7 @@ const SignUpForm = () => {
         placeholder="password"
         type="password"
         onBlur={handleInputChange}
-        defaultValue={userFormData.password}
+        defaultValue={password}
       />
       <button type="submit" className="btn">
         Submit
