@@ -5,7 +5,7 @@ const Nav = (props) => {
   const { currentPage, setCurrentPage } = props;
 
   // temp test data, update to use Auth
-  const loggedIn = false;
+  const loggedIn = true;
 
   return (
     <nav className="flex-row">

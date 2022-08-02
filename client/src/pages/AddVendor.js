@@ -23,7 +23,7 @@ const AddVendor = () => {
     console.log(vendorFormData);
   };
   const handleSubmit = async (event) => {
-    event.preventDefault;
+    event.preventDefault();
   };
 
   const {
@@ -40,7 +40,7 @@ const AddVendor = () => {
   } = vendorFormData;
 
   return (
-    <form className="container">
+    <form className="container" onSubmit={handleSubmit}>
       <h3>Add a Vendor</h3>
       <div className="flex-row">
         <div className="col-7 mr-5">

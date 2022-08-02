@@ -43,14 +43,14 @@ const AddProduct = () => {
   };
 
   const handleFormSubmit = async (event) => {
-    event.preventDefault;
+    event.preventDefault();
   };
 
   const { productName, productSku, vendorName, description, colors } =
     productFormData;
 
   return (
-    <form className="container">
+    <form className="container" onSubmit={handleFormSubmit}>
       <h3>Add a Product</h3>
       <div className="flex-row">
         <div className="col-7 mr-5">
@@ -85,7 +85,7 @@ const AddProduct = () => {
             value={vendorName}
             onChange={handleChange}
           >
-            <option value="" disabled selected hidden>
+            <option value="" disabled hidden>
               Select a vendor...
             </option>
             {vendors.map((vendor) => (

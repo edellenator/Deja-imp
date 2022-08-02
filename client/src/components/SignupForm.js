@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { validateEmail, capitalizeFirstLetter } from "../utils/helpers";
 
-const SignUpForm = () => {
+const SignUpForm = ({ setRegistered }) => {
   const [errorMessage, setErrorMessage] = useState("");
   const [userFormData, setUserFormData] = useState({
     email: "",
@@ -35,14 +35,15 @@ const SignUpForm = () => {
   };
 
   const handleFormSubmit = async (event) => {
-    event.preventDefault;
+    event.preventDefault();
+    console.log(userFormData);
     setUserFormData({ email: "", username: "", password: "" });
   };
 
   const { email, username, password } = userFormData;
 
   return (
-    <form onSubmit={handleFormSubmit} className=" container w-50 my-3">
+    <form onSubmit={handleFormSubmit} className=" container w-50 my-5 py-5">
       <h2>Sign Up</h2>
       <label htmlFor="email" className="form-label">
         Email:
@@ -77,10 +78,18 @@ const SignUpForm = () => {
         onBlur={handleInputChange}
         defaultValue={password}
       />
+      {errorMessage && <p className="text-tertiary">{errorMessage}</p>}
       <button type="submit" className="btn">
         Submit
       </button>
-      {errorMessage && <alert>{errorMessage}</alert>}
+
+      <p>
+        Already registered? Click{" "}
+        <span className="text-primary" onClick={() => setRegistered(true)}>
+          here
+        </span>{" "}
+        to login.
+      </p>
     </form>
   );
 };
