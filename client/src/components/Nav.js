@@ -11,13 +11,13 @@ const Nav = (props) => {
       {/* <> */}
       <Link
         className={`ml-2 my-1 px-3 mx-5 py-2  ${
-          currentPage === "Adjustments" && "nav-active"
+          currentPage === "Users" && "nav-active"
         }`}
-        data-testid="adjustments"
-        onClick={() => setCurrentPage("Adjustments")}
-        to="/adjustments"
+        data-testid="settings"
+        onClick={() => setCurrentPage("Users")}
+        to="/users"
       >
-        Adjustments
+        Users
       </Link>
       <Link
         className={`ml-2 my-1 px-3 mx-5 py-2  ${
@@ -38,16 +38,6 @@ const Nav = (props) => {
         to="/products"
       >
         Products
-      </Link>
-      <Link
-        className={`ml-2 my-1 px-3 mx-5 py-2  ${
-          currentPage === "Settings" && "nav-active"
-        }`}
-        data-testid="settings"
-        onClick={() => setCurrentPage("Settings")}
-        to="/settings"
-      >
-        Settings
       </Link>
 
       <Link
