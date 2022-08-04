@@ -76,7 +76,7 @@ const resolvers = {
                 { new: true });
           },
           addProduct: async (parent, args) => {
-            return Product.create(...args);
+            console.log(args)
           },
           deleteProduct: async (parent, { _id }) => {
             return Product.findOneAndDelete({ id: _id });

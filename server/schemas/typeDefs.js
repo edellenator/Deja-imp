@@ -85,6 +85,8 @@ const typeDefs = gql`
         login(email: String!, password: String!): Auth
         addUser(username: String!, email: String!, password: String!): Auth
         addVendor(input: VendorInput, contactName: String, title: String, email: String): Vendor
+        updateVendor(_id: ID!, input: VendorInput): Vendor
+        deleteVendor(_id: ID!): Vendor
         addContact(vendorId: ID!, input: ContactInput): Vendor
         deleteContact(vendorId: ID!, ContactId: ID!): Vendor
         addProduct(input: ProductInput!): Product
