@@ -4,23 +4,23 @@ const AddProduct = () => {
   // temp test data, update to query all vendors
   const vendors = [
     {
-      id: 1,
+      _id: 1,
       name: "vendor1",
     },
     {
-      id: 2,
+      _id: 2,
       name: "vendor2",
     },
     {
-      id: 3,
+      _id: 3,
       name: "vendor3",
     },
     {
-      id: 4,
+      _id: 4,
       name: "vendor4",
     },
     {
-      id: 5,
+      _id: 5,
       name: "vendor5",
     },
   ];
@@ -28,7 +28,7 @@ const AddProduct = () => {
   const [productFormData, setProductFormData] = useState({
     productName: "",
     productSku: "",
-    vendorName: "",
+    vendorId: "",
     description: "",
     colors: "",
   });
@@ -46,7 +46,7 @@ const AddProduct = () => {
     event.preventDefault();
   };
 
-  const { productName, productSku, vendorName, description, colors } =
+  const { productName, productSku, vendorId, description, colors } =
     productFormData;
 
   return (
@@ -75,21 +75,21 @@ const AddProduct = () => {
             onChange={handleChange}
             required
           />
-          <label className="form-label" htmlFor="vendorName">
+          <label className="form-label" htmlFor="vendorId">
             Vendor Name
           </label>
           <select
             className="form-input"
-            name="vendorName"
+            name="vendorId"
             type="text"
-            value={vendorName}
+            value={vendorId}
             onChange={handleChange}
           >
             <option value="" disabled hidden>
               Select a vendor...
             </option>
             {vendors.map((vendor) => (
-              <option key={vendor.id} value={vendor.name}>
+              <option key={vendor._id} value={vendor._id}>
                 {vendor.name}
               </option>
             ))}
