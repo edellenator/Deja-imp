@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { validateEmail, capitalizeFirstLetter } from "../utils/helpers";
 
-const SignUpForm = () => {
+const SignUpForm = ({ setRegistered }) => {
   const [errorMessage, setErrorMessage] = useState("");
   const [userFormData, setUserFormData] = useState({
     email: "",
@@ -34,12 +34,16 @@ const SignUpForm = () => {
     }
   };
 
-  const handleFormSubmit = async (e) => {
+  const handleFormSubmit = async (event) => {
+    event.preventDefault();
+    console.log(userFormData);
     setUserFormData({ email: "", username: "", password: "" });
   };
 
+  const { email, username, password } = userFormData;
+
   return (
-    <form onSubmit={handleFormSubmit} className=" container w-50">
+    <form onSubmit={handleFormSubmit} className=" container w-50 my-5 py-5">
       <h2>Sign Up</h2>
       <label htmlFor="email" className="form-label">
         Email:
@@ -50,7 +54,7 @@ const SignUpForm = () => {
         placeholder="email"
         type="email"
         onBlur={handleInputChange}
-        defaultValue={userFormData.email}
+        defaultValue={email}
       />
       <label htmlFor="username" className="form-label">
         Username:
@@ -61,7 +65,7 @@ const SignUpForm = () => {
         placeholder="username"
         type="text"
         onBlur={handleInputChange}
-        defaultValue={userFormData.username}
+        defaultValue={username}
       />
       <label htmlFor="password" className="form-label">
         Password:
@@ -72,12 +76,20 @@ const SignUpForm = () => {
         placeholder="password"
         type="password"
         onBlur={handleInputChange}
-        defaultValue={userFormData.password}
+        defaultValue={password}
       />
+      {errorMessage && <p className="text-tertiary">{errorMessage}</p>}
       <button type="submit" className="btn">
         Submit
       </button>
-      {errorMessage && <alert>{errorMessage}</alert>}
+
+      <p>
+        Already registered? Click{" "}
+        <span className="text-primary" onClick={() => setRegistered(true)}>
+          here
+        </span>{" "}
+        to login.
+      </p>
     </form>
   );
 };

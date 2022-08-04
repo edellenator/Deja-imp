@@ -1,21 +1,26 @@
 import React, { useState } from "react";
 
-const LoginForm = () => {
-  const [userFormData, setUserFormData] = useState({ email: "", password: "" });
+const LoginForm = ({ setRegistered }) => {
+  const [userFormData, setUserFormData] = useState({
+    username: "",
+    password: "",
+  });
   const [showAlert, setShowAlert] = useState(false);
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     setUserFormData({ ...userFormData, [name]: value });
+    console.log(userFormData);
   };
 
-  const handleFormSubmit = async (e) => {
+  const handleFormSubmit = async (event) => {
+    event.preventDefault();
     setShowAlert(true);
     setUserFormData({ username: "", password: "" });
   };
 
   return (
-    <form onSubmit={handleFormSubmit} className="container w-50">
+    <form onSubmit={handleFormSubmit} className="container w-50 my-5 py-5">
       <h2>Login</h2>
       <label htmlFor="username" className="form-label">
         Username:
@@ -39,10 +44,17 @@ const LoginForm = () => {
         onChange={handleInputChange}
         value={userFormData.password}
       />
-      {showAlert && <alert>Invalid credentials</alert>}
+      {showAlert && <p className="text-tertiary">Invalid credentials</p>}
       <button type="submit" className="btn">
         Submit
       </button>
+      <p>
+        Not registered? Click{" "}
+        <span className="text-primary" onClick={() => setRegistered(false)}>
+          here
+        </span>{" "}
+        to sign up.
+      </p>
     </form>
   );
 };
