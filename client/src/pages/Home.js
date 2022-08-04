@@ -1,16 +1,21 @@
 import React from "react";
-// import LoginForm from "./LoginForm";
+import { Link } from "react-router-dom";
 
 const Home = ({ showModal }) => {
+  // temp test data, replace with Auth
+  const loggedIn = false;
+
   return (
     <div className="container w-50 text-center py-custom">
-      {/* <div className="modal">
-        <LoginForm />
-      </div> */}
       <h3>Welcome to [Custom Enterprise Name] Inventory System.</h3>
-      {/* {!Auth.loggedIn && ( */}
-      <p>Login to view [Custom Enterprise Name] inventory.</p>
-      {/* )} */}
+      {!loggedIn && (
+        <p>
+          <Link to="/login" className="text-primary">
+            Login
+          </Link>{" "}
+          to view [Custom Enterprise Name] inventory.
+        </p>
+      )}
     </div>
   );
 };
