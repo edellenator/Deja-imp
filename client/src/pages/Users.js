@@ -9,32 +9,32 @@ const Users = () => {
 
   const users = [
     {
-      id: 1,
+      _id: 1,
       username: "user1",
       email: "user1@email.com",
     },
     {
-      id: 2,
+      _id: 2,
       username: "user2",
       email: "user2@email.com",
     },
     {
-      id: 3,
+      _id: 3,
       username: "user3",
       email: "user3@email.com",
     },
     {
-      id: 4,
+      _id: 4,
       username: "user4",
       email: "user4@email.com",
     },
     {
-      id: 5,
+      _id: 5,
       username: "user5",
       email: "user5@email.com",
     },
     {
-      id: 6,
+      _id: 6,
       username: "user6",
       email: "user6@email.com",
     },
@@ -46,14 +46,23 @@ const Users = () => {
         <h3>{me.username}</h3>
         <h4>{me.email}</h4>
       </div>
-      <div className="container my-5">
-        <h5>Other Users:</h5>
-        <ul>
+      <table className="table m-5">
+        <thead>
+          <tr className="text-center">
+            <th className="m-5" scope="col">
+              <h3>Other Users</h3>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
           {users.map((user) => (
-            <li key={user.id}>{user.username}</li>
+            <tr className="text-center" key={user._id}>
+              <td>{user.username}</td>
+              <td>{user.email}</td>
+            </tr>
           ))}
-        </ul>
-      </div>
+        </tbody>
+      </table>
     </div>
   );
 };
