@@ -1,4 +1,4 @@
-const { User, Product, Vendor } = require('../models/');
+const { User, Product, Vendor, Contact } = require('../models/');
 const { AuthenticationError } = require('apollo-server-express');
 const { signToken } = require('../utils/auth');
 
@@ -24,10 +24,11 @@ const resolvers = {
             return Vendor.find()
               .select('-__v')
               .populate('products')
-              .populate('notes');
         },
         product: async (parent, { _id }) => {
-            return Product.findById(_id);
+            return Product.findById(_id)
+              .select('-__v')
+              .populate('vendor');
         },
         products: async () => {
             return Product.find()
@@ -58,8 +59,21 @@ const resolvers = {
             const token = signToken(user);
             return { token, user };
           },
-          addVendor: async (parent, args) => {
-            return Vendor.create(...args);
+          addVendor: async (parent, { input, ...args}) => {
+            const vendor = await Vendor.create(input);
+               return Vendor.findByIdAndUpdate({ _id: vendor._id },
+                    {$addToSet: { contact: args } },
+                    { new: true });
+          },
+          addContact: async (parent, { vendorId, input }) => {
+            return Vendor.findByIdAndUpdate({ _id: vendorId },
+                {$addToSet: { contact: input } },
+                { new: true });
+          },
+          deleteContact: async (parent, { vendorId, contactId }) => {
+            return Vendor.findByIdAndUpdate({ _id: vendorId },
+                {$pull: { contact: contactId } },
+                { new: true });
           },
           addProduct: async (parent, args) => {
             return Product.create(...args);
@@ -69,3 +83,5 @@ const resolvers = {
           }
     }
 }
+
+module.exports = resolvers;

@@ -2,13 +2,18 @@ const { gql } = require('apollo-server-express');
 
 const typeDefs = gql`
     input VendorInput {
-        vendor: String!
-        contactId: ID
-        phone: Int
+        vendorName: String
+        phoneNumber: String
         street: String
         city: String
         state: String
         zip: Int
+    }
+
+    input ContactInput {
+        contactName: String
+        title: String
+        email: String
     }
 
     input ProductInput {
@@ -43,9 +48,9 @@ const typeDefs = gql`
 
     type Vendor {
         _id: ID
-        vendor: String
+        vendorName: String
         contact: [Contact]
-        phone: Int
+        phoneNumber: String
         street: String
         city: String
         state: String
@@ -56,7 +61,7 @@ const typeDefs = gql`
 
     type Contact {
         _id: ID
-        name: String
+        contactName: String
         title: String
         email: String
     }
@@ -76,15 +81,16 @@ const typeDefs = gql`
         products: [Product]
     }
 
-    type Mutations {
+    type Mutation {
         login(email: String!, password: String!): Auth
         addUser(username: String!, email: String!, password: String!): Auth
-        addVendor(input: VendorInput!): Vendor
+        addVendor(input: VendorInput, contactName: String, title: String, email: String): Vendor
+        addContact(vendorId: ID!, input: ContactInput): Vendor
+        deleteContact(vendorId: ID!, ContactId: ID!): Vendor
         addProduct(input: ProductInput!): Product
         deleteProduct(_id: ID!): Product
         deleteUser(_id: ID!): User
         updateStock(_id: ID!, stock: Int!): Product
-        updateVendor(_id: ID!, input: VendorInput!): Vendor
 }`
 
 module.exports = typeDefs;

@@ -19,16 +19,32 @@ const vendorSchema = new Schema(
             required: true
         }, 
         city: { 
-            string: String,
+            type: String,
             required: true
-        }, 
+        },
+        state: {
+            type: String,
+            required: true
+        },
         zip: { 
             type: Number,
-            required, 
+            required: true, 
             minLength: 5,
             maxLength: 9
         },
-        contacts: [contactSchema]
+        products: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: 'Product'
+            }
+        ],
+        notes: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: 'Note'
+            }
+        ],
+        contact: [contactSchema]
     }   
 )
 
