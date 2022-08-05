@@ -13,26 +13,51 @@ const resolvers = {
             }
             throw new AuthenticationError('Not logged in');
         },
-        users: async () => {
+        users: async (parent, args, context) => {
+          if(context.user) {
             return User.find()
               .select('-__v -password');
+          }
+            throw new AuthenticationError('Not logged in');
         },
-        vendor: async (parent, { _id }) => {
-            return Vendor.findById(_id);
+        user: async (parent, { _id }, context) => {
+          if(context.user) {
+            return User.findById(_id)
+              .select('-__v -password');
+          }
+            throw new AuthenticationError('Not logged in');
         },
-        vendors: async () => {
+        vendor: async (parent, { _id }, context) => {
+          if(context.user) {
+            return Vendor.findById(_id)
+              .select('-__v')
+              .populate('products')
+          }
+            throw new AuthenticationError('Not logged in');
+        },
+        vendors: async (parent, args, context) => {
+          if(context.user) {
             return Vendor.find()
               .select('-__v')
               .populate('products')
+          }
+            throw new AuthenticationError('Not logged in');
         },
-        product: async (parent, { _id }) => {
+        product: async (parent, { _id }, context) => {
+          if(context.user) {
             return Product.findById(_id)
               .select('-__v')
+              .populate('vendor')
+          }
+            throw new AuthenticationError('Not logged in');
         },
-        products: async () => {
+        products: async (parent, args, context) => {
+          if(context.user) {
             return Product.find()
               .select('-__v')
               .populate('vendor');
+            }
+            throw new AuthenticationError('Not logged in');
         }
     },
     Mutation: {
@@ -41,6 +66,12 @@ const resolvers = {
             const token = signToken(user);
 
             return { token, user };
+        },
+        deleteUser: async (parent, { _id }, context) => {
+          if(context.user) {
+          return User.findByIdAndDelete({ _id: _id }, { new: true });
+        }
+        throw new AuthenticationError('Not logged in');
         },
         login: async (parent, { email, password }) => {
             const user = await User.findOne({ email });
@@ -58,39 +89,99 @@ const resolvers = {
             const token = signToken(user);
             return { token, user };
           },
-          addVendor: async (parent, { input, ...args}) => {
-            const vendor = await Vendor.create(input);
-               return Vendor.findByIdAndUpdate({ _id: vendor._id },
-                    {$addToSet: { contact: args } },
-                    { new: true });
+          addVendor: async (parent, { input, ...args}, context) => {
+            if(context.user) {
+              const vendor = await Vendor.create(input);
+
+                return Vendor.findByIdAndUpdate({ _id: vendor._id },
+                      {$addToSet: { contact: args } },
+                      { new: true });
+            }
+              throw new AuthenticationError('Not logged in');
           },
-          addContact: async (parent, { vendorId, input }) => {
-            return Vendor.findByIdAndUpdate({ _id: vendorId },
-                {$addToSet: { contact: input } },
-                { new: true });
+          addContact: async (parent, { vendorId, input }, context) => {
+            if(context.user) {
+              return Vendor.findByIdAndUpdate({ _id: vendorId },
+                  {$addToSet: { contact: input } },
+                  { new: true });
+            }
+            throw new AuthenticationError('Not logged in');
           },
-          updateVendor: async (parent, { _id, input }) => {
-            return Vendor.findByIdAndUpdate({ _id: _id }, input,
-                { new: true })
+          updateVendor: async (parent, { _id, input }, context) => {
+            if(context.user) {
+              return Vendor.findByIdAndUpdate({ _id: _id }, input,
+                  { new: true })
+            }
+            throw new AuthenticationError('Not logged in');
           },
-          deleteVendor: async (parent, { vendorId }) => {
-            return Vendor.findByIdAndDelete({ _id: vendorId },
-                { new: true });
+          deleteVendor: async (parent, { _id }, context) => {
+            if(context.user) {
+              const vendor = await Vendor.findByIdAndDelete({ _id: _id },
+                  { new: true });
+
+              return vendor;
+            }
+            throw new AuthenticationError('Not logged in');
+            
           },
-          deleteContact: async (parent, { vendorId, contactId }) => {
-            return Vendor.findByIdAndUpdate({ _id: vendorId },
-                {$pull: { contact: contactId } },
-                { new: true });
+          deleteContact: async (parent, { vendorId, email }, context) => {
+            if(context.user) {
+              return Vendor.findByIdAndUpdate({ _id: vendorId },
+                  {$pull: { contact: { email: email } } },
+                  { new: true });
+            }
+            throw new AuthenticationError('Not logged in');
           },
-          addProduct: async (parent, { input }) => {
-            return Product.create(input);
+          addProduct: async (parent, { input }, context) => {
+            if(context.user) {
+              const product = await Product.create(input);
+
+              const vendor = await Vendor.findByIdAndUpdate({ _id: input.vendorId },
+                { $addToSet: { products: product } },
+                { new: true }
+                );
+
+              return Product.findByIdAndUpdate(
+                { _id: product._id },
+                { vendor: vendor },
+                { new: true }
+              )
+              .select('-__v')
+              .populate('vendor');
+            }
+            throw new AuthenticationError('Not logged in');
           },
-          updateStock: async (parent, { _id, stock }) => {
-            Product.findByIdAndUpdate({ _id: _id },
-                { stock: stock }, { new: true });
+          updateStock: async (parent, { _id, stock }, context) => {
+            if(context.user) {
+              return Product.findByIdAndUpdate({ _id: _id },
+                  { stock: stock }, { new: true })
+                  .select('-__v')
+                  .populate('vendor');
+            }
+            throw new AuthenticationError('Not logged in');
           },
-          deleteProduct: async (parent, { _id }) => {
-            return Product.findOneAndDelete({ id: _id });
+          updateProduct: async (parent, { _id, input }, context) => {
+            if(context.user) {
+              return Product.findByIdAndUpdate({ _id: _id },
+                input, { new: true })
+                .select('-__v')
+                .populate('vendor');
+            }
+            throw new AuthenticationError('Not logged in');
+          },
+          deleteProduct: async (parent, { _id }, context) => {
+            if(context.user) {
+              const product = await Product.findOneAndDelete({ _id: _id }, { new: true });
+
+              const vendor = await Vendor.findByIdAndUpdate(
+                { _id: product.vendor },
+                { $pull: { products: _id } },
+                { new: true }
+              );
+              
+              return product
+            }
+            throw new AuthenticationError('Not logged in');
           }
     }
 }

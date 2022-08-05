@@ -76,6 +76,7 @@ const typeDefs = gql`
 
     type Query {
         me: Auth
+        user(_id: ID!): User
         users: [User]
         vendor(_id: ID!): Vendor
         vendors: [Vendor]
@@ -90,7 +91,7 @@ const typeDefs = gql`
         updateVendor(_id: ID!, input: VendorInput): Vendor
         deleteVendor(_id: ID!): Vendor
         addContact(vendorId: ID!, input: ContactInput): Vendor
-        deleteContact(vendorId: ID!, ContactId: ID!): Vendor
+        deleteContact(vendorId: ID!, email: String!): Vendor
         addProduct(input: ProductInput): Product
         deleteProduct(_id: ID!): Product
         deleteUser(_id: ID!): User

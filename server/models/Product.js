@@ -24,6 +24,10 @@ const productSchema = new Schema(
         color: { 
             type: String,
             required: true,
+        }, 
+        vendor: {
+            type: Schema.Types.ObjectId,
+            ref: 'Vendor'
         }
         
     }
