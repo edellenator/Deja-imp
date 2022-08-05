@@ -19,3 +19,16 @@ export const ADD_CONTACT = gql `
         }
     }
 `
+
+export const ADD_PRODUCT = gql `
+    mutation($input: ProductInput) {
+        addProduct(input: $input) {
+        _id
+        name
+        SKU
+        stock
+        description
+        color
+        }
+    }
+`

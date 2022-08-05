@@ -17,6 +17,7 @@ const typeDefs = gql`
     }
 
     input ProductInput {
+        vendorId: ID
         name: String
         SKU: String
         stock: Int
@@ -38,9 +39,10 @@ const typeDefs = gql`
 
     type Product {
         _id: ID
+        vendorId: ID
         name: String
         SKU: String
-        vendor: [Vendor]
+        vendor: Vendor
         stock: Int
         description: String
         color: String
@@ -89,10 +91,11 @@ const typeDefs = gql`
         deleteVendor(_id: ID!): Vendor
         addContact(vendorId: ID!, input: ContactInput): Vendor
         deleteContact(vendorId: ID!, ContactId: ID!): Vendor
-        addProduct(input: ProductInput!): Product
+        addProduct(input: ProductInput): Product
         deleteProduct(_id: ID!): Product
         deleteUser(_id: ID!): User
         updateStock(_id: ID!, stock: Int!): Product
+        updateProduct(_id: ID!, input: ProductInput): Product
 }`
 
 module.exports = typeDefs;

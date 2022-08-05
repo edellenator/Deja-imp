@@ -28,7 +28,6 @@ const resolvers = {
         product: async (parent, { _id }) => {
             return Product.findById(_id)
               .select('-__v')
-              .populate('vendor');
         },
         products: async () => {
             return Product.find()
@@ -70,13 +69,25 @@ const resolvers = {
                 {$addToSet: { contact: input } },
                 { new: true });
           },
+          updateVendor: async (parent, { _id, input }) => {
+            return Vendor.findByIdAndUpdate({ _id: _id }, input,
+                { new: true })
+          },
+          deleteVendor: async (parent, { vendorId }) => {
+            return Vendor.findByIdAndDelete({ _id: vendorId },
+                { new: true });
+          },
           deleteContact: async (parent, { vendorId, contactId }) => {
             return Vendor.findByIdAndUpdate({ _id: vendorId },
                 {$pull: { contact: contactId } },
                 { new: true });
           },
-          addProduct: async (parent, args) => {
-            console.log(args)
+          addProduct: async (parent, { input }) => {
+            return Product.create(input);
+          },
+          updateStock: async (parent, { _id, stock }) => {
+            Product.findByIdAndUpdate({ _id: _id },
+                { stock: stock }, { new: true });
           },
           deleteProduct: async (parent, { _id }) => {
             return Product.findOneAndDelete({ id: _id });
