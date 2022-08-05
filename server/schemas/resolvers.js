@@ -75,6 +75,7 @@ const resolvers = {
         },
         login: async (parent, { email, password }) => {
             const user = await User.findOne({ email });
+            console.log(user)
           
             if (!user) {
               throw new AuthenticationError('Incorrect credentials');
@@ -83,7 +84,7 @@ const resolvers = {
             const correctPw = await user.isCorrectPassword(password);
           
             if (!correctPw) {
-              throw new AuthenticationError('Incorrect credentials');
+              throw new AuthenticationError('Incorrect pw');
             }
           
             const token = signToken(user);
