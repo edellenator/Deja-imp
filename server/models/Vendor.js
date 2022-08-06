@@ -46,6 +46,10 @@ const vendorSchema = new Schema(
     }   
 )
 
+vendorSchema.virtual('productCount').get(function() {
+    return this.products.length;
+})
+
 const Vendor = model('Vendor', vendorSchema)
 
 module.exports = Vendor; 
