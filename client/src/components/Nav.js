@@ -9,7 +9,7 @@ const Nav = (props) => {
 
   return (
     <nav className="flex-row">
-      {loggedIn && (
+      {loggedIn ? (
         <>
           <Link
             className={`ml-2 my-1 px-3 mx-5 py-2  ${
@@ -41,18 +41,19 @@ const Nav = (props) => {
           >
             Products
           </Link>
+          <a className="ml-2 my-1 px-3 mx-5 py-2">Logout</a>
         </>
+      ) : (
+        <Link
+          className={`ml-2 my-1 px-3 mx-5 py-2  ${
+            currentPage === "Login" && "nav-active"
+          }`}
+          to="/login"
+          onClick={() => setCurrentPage("Login")}
+        >
+          Register/Login
+        </Link>
       )}
-
-      <Link
-        className={`ml-2 my-1 px-3 mx-5 py-2  ${
-          currentPage === "Login" && "nav-active"
-        }`}
-        to="/login"
-        onClick={() => setCurrentPage("Login")}
-      >
-        Register/Login
-      </Link>
     </nav>
   );
 };
