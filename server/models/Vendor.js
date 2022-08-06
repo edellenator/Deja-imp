@@ -38,12 +38,10 @@ const vendorSchema = new Schema(
                 ref: 'Product'
             }
         ],
-        notes: [
-            {
-                type: Schema.Types.ObjectId,
-                ref: 'Note'
-            }
-        ],
+        note: {
+            type: String,
+            maxLength: 280
+        },
         contact: [contactSchema]
     }   
 )

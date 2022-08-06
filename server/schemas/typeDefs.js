@@ -58,7 +58,7 @@ const typeDefs = gql`
         state: String
         zip: Int
         products: [Product]
-        notes: [Note]
+        note: String
     }
 
     type Contact {
@@ -66,12 +66,6 @@ const typeDefs = gql`
         contactName: String
         title: String
         email: String
-    }
-
-    type Note {
-        _id: ID
-        noteBody: String
-        createdAt: String
     }
 
     type Query {
