@@ -1,6 +1,7 @@
 import React, {useEffect} from "react";
 import { Link, useParams } from "react-router-dom";
 import { useQuery, useMutation } from "@apollo/client";
+import ProductList from "../components/ProductList";
 // import QUERY_VENDOR from
 const Vendor = () => {
     const vendors = [
@@ -171,22 +172,7 @@ const Vendor = () => {
                 <hr className="solid col-12" />
                 <div className="flex-column col-12">
                     <h3 className="my-2">Products</h3>
-                    <table className="table">
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Stock</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {vendor.products.map((product) =>
-                            <tr className="text-center" key={product.id}>
-                                <td>{product.name}</td>
-                                <td>{product.stock}</td>
-                            </tr>
-                            )}
-                        </tbody>
-                    </table>
+                    <ProductList products={vendor.products} />
                 </div>
             </div>
 
