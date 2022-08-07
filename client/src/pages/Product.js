@@ -48,7 +48,7 @@ const Product = () => {
         return data.id === id
     });
 
-    const [currentStock, setStock] = useState( () => {
+    const [currentStock, setStock] = useState(() => {
         if(data) {
            return data.stock
         }
@@ -82,7 +82,7 @@ const Product = () => {
                         <h4>Vendor: <span>{data.vendor}</span></h4>
                         <h4>Description: <span>{data.description}</span></h4>
                         <h4>Colors: {data.colors.map((color, i, arr) =>
-                        i < arr.length - 1 ? <span>{color}, </span> : <span>{color}</span>
+                        i < arr.length - 1 ? <span key={data.id}>{color}, </span> : <span key={data.id}>{color}</span>
                         )}
                         </h4>
                     </div>
