@@ -50,8 +50,10 @@ const Product = () => {
 
     const [currentStock, setStock] = useState(product.stock)
 
-    const handleChange = event => {
-            setStock(currentStock + parse(event.target.value));
+    const handleSubmit = event => {
+            event.preventdefault();
+
+            setStock(currentStock + parseInt(event.target.value));
     };
 
     return (
@@ -73,8 +75,8 @@ const Product = () => {
                     <h2>Stock: {currentStock}</h2>
                     <form className="form flex-row">
                         <label htmlFor="stock" className="form-label">Adjust stock by: </label>
-                        <input className="form-input" name="stock" id="stock" type="number" onChange={() => handleChange} />
-
+                        <input className="form-input" name="stock" id="stock" type="number" />
+                        <button className="btn" type="submit" onSubmit={handleSubmit}>Submit</button>
                     </form>
                     
                     
