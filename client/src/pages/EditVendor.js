@@ -110,6 +110,7 @@ const EditVendor = () => {
     
 
     const {id: idParam} = useParams();
+    console.log(idParam)
 
     const vendor = vendors.find((vendor) => {
         return vendor.id === idParam
@@ -133,7 +134,8 @@ const EditVendor = () => {
     return (
         <VendorForm 
             vendorFormData={vendorFormData} 
-            setVendorFormData={setVendorFormData} 
+            setVendorFormData={setVendorFormData}
+            id={idParam} 
         />
     )
 }

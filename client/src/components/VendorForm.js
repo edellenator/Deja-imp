@@ -1,6 +1,7 @@
 import React from "react";
+import { useParams } from "react-router-dom";
 
-const VendorForm = ({ vendorFormData, setVendorFormData }) => {
+const VendorForm = ({ vendorFormData, setVendorFormData, id }) => {
   const handleChange = (event) => {
     const { name, value } = event.target;
     setVendorFormData({
@@ -127,7 +128,7 @@ const VendorForm = ({ vendorFormData, setVendorFormData }) => {
             onChange={handleChange}
           />
           <button type="submit" className="btn">
-            Add Vendor
+            {id ? "Edit Vendor" : "Add Vendor"}
           </button>
         </div>
       </div>
