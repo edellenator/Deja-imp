@@ -44,12 +44,23 @@ const Product = () => {
 
     const {id: id} = useParams();
 
-    const product = products.find(product => {
-        return product.id === id
+    const data = products.find(data => {
+        return data.id === id
     });
 
-    const [currentStock, setStock] = useState(product.stock)
+    const [currentStock, setStock] = useState( () => {
+        if(data) {
+           return data.stock
+        }
+        else {
+            return "...loading"
+        }
+    }
+        
+    )
+
     const [adjustStock, setAdjustStock] = useState(0)
+
     const handleFormChange = (event) => {
         event.preventDefault();
         setAdjustStock(parseInt(event.target.value));
@@ -65,12 +76,12 @@ const Product = () => {
         <section className="container">
             <div className="flex-row">
                 <div className="flex-column col-6">
-                    <h2>{product.name}</h2>
+                    <h2>{data.name}</h2>
                     <div className="card my-2 ml-5">
-                        <h4>SKU: <span>{product.sku}</span></h4>
-                        <h4>Vendor: <span>{product.vendor}</span></h4>
-                        <h4>Description: <span>{product.description}</span></h4>
-                        <h4>Colors: {product.colors.map((color, i, arr) =>
+                        <h4>SKU: <span>{data.sku}</span></h4>
+                        <h4>Vendor: <span>{data.vendor}</span></h4>
+                        <h4>Description: <span>{data.description}</span></h4>
+                        <h4>Colors: {data.colors.map((color, i, arr) =>
                         i < arr.length - 1 ? <span>{color}, </span> : <span>{color}</span>
                         )}
                         </h4>
