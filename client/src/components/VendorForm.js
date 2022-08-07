@@ -1,19 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 
-const VendorForm = () => {
-  const [vendorFormData, setVendorFormData] = useState({
-    vendorName: "",
-    vendorContact: "",
-    title: "",
-    email: "",
-    phone: "",
-    street: "",
-    city: "",
-    state: "",
-    zip: "",
-    notes: "",
-  });
-
+const VendorForm = ({ vendorFormData, setVendorFormData }) => {
   const handleChange = (event) => {
     const { name, value } = event.target;
     setVendorFormData({

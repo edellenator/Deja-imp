@@ -1,8 +1,25 @@
-import React from "react";
+import React, { useState } from "react";
 import VendorForm from "../components/VendorForm";
 
 const AddVendor = () => {
-  return <VendorForm />;
+  const [vendorFormData, setVendorFormData] = useState({
+    vendorName: "",
+    vendorContact: "",
+    title: "",
+    email: "",
+    phone: "",
+    street: "",
+    city: "",
+    state: "",
+    zip: "",
+    notes: "",
+  });
+  return (
+    <VendorForm
+      vendorFormData={vendorFormData}
+      setVendorFormData={setVendorFormData}
+    />
+  );
 };
 
 export default AddVendor;
