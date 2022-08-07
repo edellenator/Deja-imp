@@ -49,11 +49,16 @@ const Product = () => {
     });
 
     const [currentStock, setStock] = useState(product.stock)
+    const [adjustStock, setAdjustStock] = useState(0)
+    const handleFormChange = (event) => {
+        event.preventDefault();
+        setAdjustStock(parseInt(event.target.value));
+    }
+    const handleSubmit = (event) => {
+        event.preventDefault();
 
-    const handleSubmit = event => {
-            event.preventdefault();
-
-            setStock(currentStock + parseInt(event.target.value));
+        setStock(currentStock + adjustStock);
+       
     };
 
     return (
@@ -73,10 +78,10 @@ const Product = () => {
                 </div>
                 <div className="flex-column col-6 ml-2">
                     <h2>Stock: {currentStock}</h2>
-                    <form className="form flex-row">
+                    <form className="form flex-row" onSubmit={handleSubmit}>
                         <label htmlFor="stock" className="form-label">Adjust stock by: </label>
-                        <input className="form-input" name="stock" id="stock" type="number" />
-                        <button className="btn" type="submit" onSubmit={handleSubmit}>Submit</button>
+                        <input className="form-input" name="stock" id="stock" type="number" onChange={handleFormChange} />
+                        <button className="btn" type="submit">Submit</button>
                     </form>
                     
                     
