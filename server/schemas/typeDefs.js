@@ -63,8 +63,8 @@ const typeDefs = gql`
 
     type Note {
         _id: ID
-        noteBody
-        createdAt
+        notesBody: String
+        createdAt: String
     }
     type Contact {
         _id: ID
@@ -90,7 +90,7 @@ const typeDefs = gql`
         updateVendor(_id: ID!, input: VendorInput!): Vendor
         deleteVendor(_id: ID!): Vendor
         addContact(vendorId: ID!, input: ContactInput!): Vendor
-        addNote(vendorId: ID!, noteBody: String!): Vendor
+        addNote(vendorId: ID!, notesBody: String!): Vendor
         deleteNote(vendorId: ID!, _id: ID!): Vendor
         deleteContact(vendorId: ID!, email: String!): Vendor
         addProduct(input: ProductInput): Product

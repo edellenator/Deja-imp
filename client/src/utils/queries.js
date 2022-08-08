@@ -66,27 +66,32 @@ export const QUERY_PRODUCTS = gql `
 export const QUERY_VENDOR = gql `
 query getVendor($id: ID!) {
     vendor(_id: $id) {
-      _id
-      vendorName
-      phoneNumber
-      street
-      state
-      zip
-      city
-      contact {
         _id
-        contactName
-        title
-        email
-      }
-      products {
-        _id
-        name
-        SKU
-        stock
-        description
-        color
-      }
+        vendorName
+        phoneNumber
+        street
+        state
+        zip
+        city
+        contact {
+          _id
+          contactName
+          title
+          email
+        }
+        products {
+          _id
+          name
+          SKU
+          stock
+          description
+          color
+        }
+        notes {
+          _id
+          notesBody
+          createdAt
+        }
     }
   }
 `
@@ -102,18 +107,23 @@ export const QUERY_VENDORS = gql `
             zip
             city
             contact {
-                _id
-                contactName
-                title
-                email
+              _id
+              contactName
+              title
+              email
             }
             products {
-                _id
-                name
-                SKU
-                stock
-                description
-                color
+              _id
+              name
+              SKU
+              stock
+              description
+              color
+            }
+            notes {
+              _id
+              notesBody
+              createdAt
             }
         }
   }

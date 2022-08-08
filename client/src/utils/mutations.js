@@ -31,14 +31,27 @@ export const ADD_VENDOR = gql `
             vendorName
             phoneNumber
             street
-            city
-            street
+            state
             zip
+            city
             contact {
-                _id
-                contactName
-                title
-                email
+              _id
+              contactName
+              title
+              email
+            }
+            products {
+              _id
+              name
+              SKU
+              stock
+              description
+              color
+            }
+            notes {
+              _id
+              notesBody
+              createdAt
             }
         }
     } 
@@ -55,10 +68,23 @@ export const ADD_CONTACT = gql `
             zip
             city
             contact {
-                _id
-                contactName
-                title
-                email
+              _id
+              contactName
+              title
+              email
+            }
+            products {
+              _id
+              name
+              SKU
+              stock
+              description
+              color
+            }
+            notes {
+              _id
+              notesBody
+              createdAt
             }
         }
     }
@@ -75,6 +101,71 @@ export const ADD_PRODUCT = gql `
         color
         }
     }
+`
+export const DELETE_NOTE = gql `
+  mutation deleteNote($vendorId: ID!, $id: ID!){
+    deleteNote(vendorId: $vendorId, _id: $id) {
+        _id
+        vendorName
+        phoneNumber
+        street
+        state
+        zip
+        city
+        contact {
+          _id
+          contactName
+          title
+          email
+        }
+        products {
+          _id
+          name
+          SKU
+          stock
+          description
+          color
+        }
+        notes {
+          _id
+          notesBody
+          createdAt
+        }
+    }
+  }
+`
+
+export const ADD_NOTE = gql `
+  mutation addNote($vendorId: ID!, $noteBody: String!){
+    addNote(vendorId: $vendorId, notesBody: $noteBody) {
+        _id
+        vendorName
+        phoneNumber
+        street
+        state
+        zip
+        city
+        contact {
+          _id
+          contactName
+          title
+          email
+        }
+        products {
+          _id
+          name
+          SKU
+          stock
+          description
+          color
+        }
+        notes {
+          _id
+          notesBody
+          createdAt
+        }
+    }
+  }
 `
 
 export const UPDATE_STOCK = gql `
@@ -105,18 +196,23 @@ export const UPDATE_VENDOR = gql `
             zip
             city
             contact {
-                _id
-                contactName
-                title
-                email
+              _id
+              contactName
+              title
+              email
             }
             products {
-                _id
-                name
-                SKU
-                stock
-                description
-                color
+              _id
+              name
+              SKU
+              stock
+              description
+              color
+            }
+            notes {
+              _id
+              notesBody
+              createdAt
             }
         }
     }
@@ -133,18 +229,23 @@ export const DELETE_VENDOR = gql `
             zip
             city
             contact {
-                _id
-                contactName
-                title
-                email
+              _id
+              contactName
+              title
+              email
             }
             products {
-                _id
-                name
-                SKU
-                stock
-                description
-                color
+              _id
+              name
+              SKU
+              stock
+              description
+              color
+            }
+            notes {
+              _id
+              notesBody
+              createdAt
             }
         }
     }
@@ -184,10 +285,23 @@ export const DELETE_CONTACT = gql `
             zip
             city
             contact {
-                _id
-                contactName
-                title
-                email
+              _id
+              contactName
+              title
+              email
+            }
+            products {
+              _id
+              name
+              SKU
+              stock
+              description
+              color
+            }
+            notes {
+              _id
+              notesBody
+              createdAt
             }
         }
     }
