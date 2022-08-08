@@ -1,9 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import Auth from "../utils/auth";
 
 const Home = ({ showModal }) => {
-  // temp test data, replace with Auth
-  const loggedIn = false;
+  const loggedIn = Auth.loggedIn();
 
   return (
     <div className="container w-50 text-center py-custom">

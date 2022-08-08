@@ -1,5 +1,8 @@
 import React, { useState } from "react";
+import { useMutation } from "@apollo/client";
+import { ADD_USER } from "../utils/mutations";
 import { validateEmail, capitalizeFirstLetter } from "../utils/helpers";
+import Auth from "../utils/auth";
 
 const SignUpForm = ({ setRegistered }) => {
   const [errorMessage, setErrorMessage] = useState("");
@@ -8,6 +11,8 @@ const SignUpForm = ({ setRegistered }) => {
     username: "",
     password: "",
   });
+
+  const [addUser, { loading }] = useMutation(ADD_USER);
 
   const handleInputChange = (event) => {
     if (event.target.name === "email") {
@@ -37,6 +42,15 @@ const SignUpForm = ({ setRegistered }) => {
   const handleFormSubmit = async (event) => {
     event.preventDefault();
     console.log(userFormData);
+
+    try {
+      const { data } = await addUser({ variables: { ...userFormData } });
+      Auth.login(data.addUser.token);
+    } catch (error) {
+      console.log(error);
+      setErrorMessage("Something went wrong!");
+    }
+
     setUserFormData({ email: "", username: "", password: "" });
   };
 
@@ -79,9 +93,13 @@ const SignUpForm = ({ setRegistered }) => {
         defaultValue={password}
       />
       {errorMessage && <p className="text-tertiary">{errorMessage}</p>}
-      <button type="submit" className="btn">
-        Submit
-      </button>
+      {loading ? (
+        <button className="btn">Submitting...</button>
+      ) : (
+        <button type="submit" className="btn">
+          Submit
+        </button>
+      )}
 
       <p>
         Already registered? Click{" "}

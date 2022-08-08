@@ -1,11 +1,15 @@
 import React, { useState } from "react";
+import { useMutation } from "@apollo/client";
+import { LOGIN_USER } from "../utils/mutations";
+import Auth from "../utils/auth";
 
 const LoginForm = ({ setRegistered }) => {
   const [userFormData, setUserFormData] = useState({
-    username: "",
+    email: "",
     password: "",
   });
-  const [showAlert, setShowAlert] = useState(false);
+
+  const [loginUser, { loading, error }] = useMutation(LOGIN_USER);
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -15,7 +19,14 @@ const LoginForm = ({ setRegistered }) => {
 
   const handleFormSubmit = async (event) => {
     event.preventDefault();
-    setShowAlert(true);
+
+    try {
+      const { data } = await loginUser({ variables: { ...userFormData } });
+      Auth.login(data.login.token);
+    } catch (error) {
+      console.log(error);
+    }
+
     setUserFormData({ username: "", password: "" });
   };
 
@@ -23,15 +34,15 @@ const LoginForm = ({ setRegistered }) => {
     <form onSubmit={handleFormSubmit} className="container w-50 my-5 py-5">
       <h2>Login</h2>
       <label htmlFor="username" className="form-label">
-        Username:
+        Email:
       </label>
       <input
-        name="username"
+        name="email"
         className="form-input"
-        placeholder="username"
-        type="text"
+        placeholder="email"
+        type="email"
         onChange={handleInputChange}
-        value={userFormData.username}
+        value={userFormData.email}
       />
       <label htmlFor="password" className="form-label">
         Password:
@@ -44,10 +55,14 @@ const LoginForm = ({ setRegistered }) => {
         onChange={handleInputChange}
         value={userFormData.password}
       />
-      {showAlert && <p className="text-tertiary">Invalid credentials</p>}
-      <button type="submit" className="btn">
-        Submit
-      </button>
+      {error && <p className="text-tertiary">Invalid credentials</p>}
+      {loading ? (
+        <button className="btn">Submitting...</button>
+      ) : (
+        <button type="submit" className="btn">
+          Submit
+        </button>
+      )}
       <p>
         Not registered? Click{" "}
         <span className="text-primary" onClick={() => setRegistered(false)}>
