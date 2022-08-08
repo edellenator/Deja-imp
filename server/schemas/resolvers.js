@@ -32,6 +32,7 @@ const resolvers = {
             return Vendor.findById(_id)
               .select('-__v')
               .populate('products')
+              .populate('notes');
           }
             throw new AuthenticationError('Not logged in');
         },
@@ -40,6 +41,7 @@ const resolvers = {
             return Vendor.find()
               .select('-__v')
               .populate('products')
+              .populate('notes');
           }
             throw new AuthenticationError('Not logged in');
         },
@@ -93,10 +95,15 @@ const resolvers = {
           addVendor: async (parent, { input, ...args}, context) => {
             if(context.user) {
               const vendor = await Vendor.create(input);
-
+              if(args) {
                 return Vendor.findByIdAndUpdate({ _id: vendor._id },
-                      {$addToSet: { contact: args } },
-                      { new: true });
+                  {$addToSet: { contact: args } },
+                  { new: true, runValidators: true })
+                    .select('-__v')
+                    .populate('products')
+                    .populate('notes');
+              }
+              return vendor;
             }
               throw new AuthenticationError('Not logged in');
           },
@@ -104,21 +111,30 @@ const resolvers = {
             if(context.user) {
               return Vendor.findByIdAndUpdate({ _id: vendorId },
                   {$addToSet: { contact: input } },
-                  { new: true });
+                  { new: true, runValidators: true })
+                    .select('-__v')
+                    .populate('products')
+                    .populate('notes');
             }
             throw new AuthenticationError('Not logged in');
           },
           updateVendor: async (parent, { _id, input }, context) => {
             if(context.user) {
               return Vendor.findByIdAndUpdate({ _id: _id }, input,
-                  { new: true })
+                  { new: true, runValidators: true })
+                    .select('-__v')
+                    .populate('products')
+                    .populate('notes');
             }
             throw new AuthenticationError('Not logged in');
           },
           deleteVendor: async (parent, { _id }, context) => {
             if(context.user) {
               const vendor = await Vendor.findByIdAndDelete({ _id: _id },
-                  { new: true });
+                  { new: true })
+                    .select('-__v')
+                    .populate('products')
+                    .populate('notes');
 
               return vendor;
             }
@@ -129,7 +145,32 @@ const resolvers = {
             if(context.user) {
               return Vendor.findByIdAndUpdate({ _id: vendorId },
                   {$pull: { contact: { email: email } } },
-                  { new: true });
+                  { new: true })
+                    .select('-__v')
+                    .populate('products')
+                    .populate('notes');
+            }
+            throw new AuthenticationError('Not logged in');
+          },
+          addNote: async (parent, { vendorId, noteBody }, context) => {
+            if(context.user) {
+              return Vendor.findByIdAndUpdate({ _id: vendorId },
+                {$addToSet: { notes: noteBody } },
+                { new: true, runValidators: true })
+                  .select('-__v')
+                  .populate('products')
+                  .populate('notes');
+            }
+            throw new AuthenticationError('Not logged in');
+          },
+          deleteNote: async (parent, { vendorId, _id }, context) => {
+            if(context.user) {
+              return Vendor.findByIdAndUpdate({ _id: vendorId },
+                {$pull: { notes: { _id: _id } } },
+                { new: true })
+                  .select('-__v')
+                  .populate('products')
+                  .populate('notes');
             }
             throw new AuthenticationError('Not logged in');
           },
@@ -139,13 +180,13 @@ const resolvers = {
 
               const vendor = await Vendor.findByIdAndUpdate({ _id: input.vendorId },
                 { $addToSet: { products: product } },
-                { new: true }
+                { new: true, runValidators: true }
                 );
 
               return Product.findByIdAndUpdate(
                 { _id: product._id },
                 { vendor: vendor },
-                { new: true }
+                { new: true, runValidators: true }
               )
               .select('-__v')
               .populate('vendor');
@@ -155,7 +196,7 @@ const resolvers = {
           updateStock: async (parent, { _id, stock }, context) => {
             if(context.user) {
               return Product.findByIdAndUpdate({ _id: _id },
-                  { stock: stock }, { new: true })
+                  { stock: stock }, { new: true, runValidators: true })
                   .select('-__v')
                   .populate('vendor');
             }
@@ -164,7 +205,7 @@ const resolvers = {
           updateProduct: async (parent, { _id, input }, context) => {
             if(context.user) {
               return Product.findByIdAndUpdate({ _id: _id },
-                input, { new: true })
+                input, { new: true, runValidators: true })
                 .select('-__v')
                 .populate('vendor');
             }
@@ -177,7 +218,7 @@ const resolvers = {
               const vendor = await Vendor.findByIdAndUpdate(
                 { _id: product.vendor },
                 { $pull: { products: _id } },
-                { new: true }
+                { new: true, runValidators: true }
               );
               
               return product

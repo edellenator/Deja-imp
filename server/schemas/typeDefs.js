@@ -58,9 +58,14 @@ const typeDefs = gql`
         state: String
         zip: Int
         products: [Product]
-        note: String
+        notes: [Note]
     }
 
+    type Note {
+        _id: ID
+        noteBody
+        createdAt
+    }
     type Contact {
         _id: ID
         contactName: String
@@ -82,9 +87,11 @@ const typeDefs = gql`
         login(email: String!, password: String!): Auth
         addUser(username: String!, email: String!, password: String!): Auth
         addVendor(input: VendorInput, contactName: String, title: String, email: String): Vendor
-        updateVendor(_id: ID!, input: VendorInput): Vendor
+        updateVendor(_id: ID!, input: VendorInput!): Vendor
         deleteVendor(_id: ID!): Vendor
-        addContact(vendorId: ID!, input: ContactInput): Vendor
+        addContact(vendorId: ID!, input: ContactInput!): Vendor
+        addNote(vendorId: ID!, noteBody: String!): Vendor
+        deleteNote(vendorId: ID!, _id: ID!): Vendor
         deleteContact(vendorId: ID!, email: String!): Vendor
         addProduct(input: ProductInput): Product
         deleteProduct(_id: ID!): Product
