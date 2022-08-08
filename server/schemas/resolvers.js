@@ -155,7 +155,7 @@ const resolvers = {
           addNote: async (parent, { vendorId, noteBody }, context) => {
             if(context.user) {
               return Vendor.findByIdAndUpdate({ _id: vendorId },
-                {$addToSet: { notes: noteBody } },
+                {$addToSet: { notes: { notesBody: noteBody } } },
                 { new: true, runValidators: true })
                   .select('-__v')
                   .populate('products')

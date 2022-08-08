@@ -1,5 +1,6 @@
 const { Schema, model } = require('mongoose');
 const contactSchema = require('./Contact');
+const noteSchema = require('./Notes')
 
 const vendorSchema = new Schema(
     {
@@ -38,12 +39,8 @@ const vendorSchema = new Schema(
                 ref: 'Product'
             }
         ],
-        note:  [
-            {
-                type: Schema.Types.ObjectId,
-                ref: 'Note'
-                }
-        ],
+        notes:  [noteSchema],
+
         contact: [contactSchema]
     }   
 )

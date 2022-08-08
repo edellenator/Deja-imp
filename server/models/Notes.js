@@ -1,7 +1,7 @@
 const { Schema } = require('mongoose')
 const dateFormat = require('../utils/dateFormat');
 
-const notesSchema = new Schema = Schema( 
+const notesSchema = new Schema( 
     { 
         notesBody: { 
             type: String, 
