@@ -119,7 +119,9 @@ const Vendor = () => {
 
             <div className="flex-row col-9">
                 <h1 className="col-3">{vendor.name}</h1>
-                <button className="btn col-3">Edit Vendor</button>
+                <Link to={`/editVendor/${vendor.id}`}>
+                    <button className="btn col-3">Edit Vendor</button>
+                </Link>
             </div>
             <div className="flex-row">
                 <div className="flex-column col-8">

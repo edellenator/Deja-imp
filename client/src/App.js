@@ -18,6 +18,7 @@ import Vendors from "./pages/Vendors"
 import Vendor from "./pages/Vendor";
 import Products from "./pages/Products";
 import Product from "./pages/Product";
+import EditVendor from "./pages/EditVendor";
 
 const httpLink = createHttpLink({
   uri: "/graphql",
@@ -52,6 +53,7 @@ function App() {
             <Route path="/vendor" element={<AddVendor />} />
             <Route path="/vendors" element={<Vendors />} />
             <Route path="/vendor/:id" element={<Vendor />} />
+            <Route path="/editVendor/:id" element={<EditVendor />} />
             <Route path="/product" element={<AddProduct />} />
             <Route path="/products" element={<Products />} />
             <Route path="/product/:id" element={<Product />} />
