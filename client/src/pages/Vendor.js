@@ -1,9 +1,10 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import { Link, useParams } from "react-router-dom";
 import { useQuery, useMutation } from "@apollo/client";
 import ProductList from "../components/ProductList";
 // import QUERY_VENDOR from
 const Vendor = () => {
+    // temporary test data
     const vendors = [
         {
             id: "1",
@@ -112,7 +113,57 @@ const Vendor = () => {
     const vendor = vendors.find(vendor => {
         return vendor.id === id
     });
+
+    const [contactFormData, setContactFormData] = useState({
+        contactName: "",
+        contactTitle: "",
+        email: "",
+        phone: ""
+    })
+    const [noteFormData, setNoteFormData] = useState({
+        noteText:"",
+        user: "",
+        dateCreated: "",
+    })
+
+    const {
+        contactName,
+        contactTitle,
+        email,
+        phone
+    } = contactFormData
+
+    const {
+        noteText,
+        user,
+        dateCreated
+    } = noteFormData
     
+    const handleContactFormChange = (e) => {
+        const {name, value} = e.target;
+        setContactFormData({
+            ...contactFormData,
+            [name]: value
+        });
+        console.log(contactFormData);
+    };
+
+    const handleContactFormSubmit = (e) => {
+        e.preventDefault();
+    };
+
+    const handleNoteFormChange = (e) => {
+        const {name, value} = e.target;
+        setContactFormData({
+            ...noteFormData,
+            [name]: value
+        });
+        console.log(noteFormData);
+    };
+
+    const handleNoteFormSubmit = (e) => {
+        e.preventDefault();
+    };
     // const { loading, data } = useQuery(QUERY_VENDOR)
     return (
         <section className="container">
@@ -148,6 +199,27 @@ const Vendor = () => {
                                     )}
                                 </tbody>
                             </table>
+                            <form className="flex-row" onSubmit={handleContactFormSubmit}>
+                                <div className="col-auto mr-2">
+                                    <label className="form-label" htmlFor="contactName">Name</label>
+                                    <input className="form-input" type="text" name="contactName" value={contactName} onChange={handleContactFormChange}></input>
+                                </div>
+                                <div className="col-auto mr-2">
+                                    <label className="form-label" htmlFor="contact-title">Title</label>
+                                    <input className="form-input" type="text" name="contactTitle" value={contactTitle} onChange={handleContactFormChange}></input>
+                                </div>
+                                <div className="col-auto mr-2">
+                                    <label className="form-label" htmlFor="email">Email</label>
+                                    <input className="form-input" type="email" name="email" value={email} onChange={handleContactFormChange}></input>
+                                </div>
+                                <div className="col-auto mr-2">
+                                    <label className="form-label" htmlFor="phone">
+                                        Phone
+                                    </label>
+                                    <input className="form-input" type="tel" name="phone" value={phone} onChange={handleContactFormChange}></input>
+                                </div>
+                                <button className="btn col-auto" type="submit">Add Contact</button>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -163,7 +235,17 @@ const Vendor = () => {
                         </div>
                     </div>
                     )}
-                    <button className="btn">Add Note</button>
+                    <form onSubmit={handleNoteFormSubmit}>
+                        <textarea 
+                            className="form-textarea" 
+                            placeholder="Add a note" 
+                            name="noteText" 
+                            id="noteText"
+                            value={noteText}
+                            onChange={handleNoteFormChange}
+                        />
+                        <button className="btn">Add Note</button>
+                    </form>
                 </div>
                 <div className="flex-column col-12">
                     <h3 className="mb-1">Address: {vendor.street}</h3>
