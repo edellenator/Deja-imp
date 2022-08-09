@@ -75,7 +75,6 @@ export const ADD_CONTACT = gql`
     addContact(input: $input, vendorId: $vendorId) {
       _id
       vendorName
-      phoneNumber
       street
       state
       zip
@@ -85,6 +84,7 @@ export const ADD_CONTACT = gql`
         contactName
         title
         email
+        phoneNumber
       }
       products {
         _id
@@ -120,7 +120,6 @@ export const DELETE_NOTE = gql`
     deleteNote(vendorId: $vendorId, _id: $id) {
       _id
       vendorName
-      phoneNumber
       street
       state
       zip
@@ -130,6 +129,7 @@ export const DELETE_NOTE = gql`
         contactName
         title
         email
+        phoneNumber
       }
       products {
         _id
@@ -153,7 +153,6 @@ export const ADD_NOTE = gql`
     addNote(vendorId: $vendorId, notesBody: $noteBody) {
       _id
       vendorName
-      phoneNumber
       street
       state
       zip
@@ -163,6 +162,7 @@ export const ADD_NOTE = gql`
         contactName
         title
         email
+        phoneNumber
       }
       products {
         _id
@@ -199,11 +199,10 @@ export const UPDATE_STOCK = gql`
 `;
 
 export const UPDATE_VENDOR = gql`
-  mutation updateVendor($id: ID!, $input: VendorInput) {
+  mutation updateVendor($id: ID!, $input: VendorInput!) {
     updateVendor(_id: $id, input: $input) {
       _id
       vendorName
-      phoneNumber
       street
       state
       zip
@@ -213,6 +212,7 @@ export const UPDATE_VENDOR = gql`
         contactName
         title
         email
+        phoneNumber
       }
       products {
         _id
@@ -236,7 +236,6 @@ export const DELETE_VENDOR = gql`
     deleteVendor(_id: $id) {
       _id
       vendorName
-      phoneNumber
       street
       state
       zip
@@ -246,6 +245,7 @@ export const DELETE_VENDOR = gql`
         contactName
         title
         email
+        phoneNumber
       }
       products {
         _id
@@ -292,7 +292,6 @@ export const DELETE_CONTACT = gql`
     deleteContact(vendorId: $vendorId, email: $email) {
       _id
       vendorName
-      phoneNumber
       street
       state
       zip
@@ -302,6 +301,7 @@ export const DELETE_CONTACT = gql`
         contactName
         title
         email
+        phoneNumber
       }
       products {
         _id
