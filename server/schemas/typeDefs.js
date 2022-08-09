@@ -14,7 +14,6 @@ const typeDefs = gql`
     title: String
     email: String
     phoneNumber: String
-
   }
 
   input ProductInput {
@@ -76,7 +75,7 @@ const typeDefs = gql`
   }
 
   type Query {
-    me: Auth
+    me: User
     user(_id: ID!): User
     users: [User]
     vendor(_id: ID!): Vendor

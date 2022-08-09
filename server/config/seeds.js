@@ -1,5 +1,4 @@
 const { faker } = require("@faker-js/faker");
-
 const db = require("../config/connection");
 const { User, Product, Vendor } = require("../models");
 
@@ -21,42 +20,50 @@ db.once("open", async () => {
   await User.collection.insertMany(userData);
 
   // Vendor Data (vendorName, phoneNumber, street, city, zip, contacts, notes) products will be added after product creation
-  let VendorData = [];
+
   for (let i = 0; i < 10; i++) {
-    const vendorName = faker.company.companyName();
-    const street = faker.address.street();
-    const city = faker.address.city();
-    const state = faker.address.state();
-    const zip = faker.address.zipCode();
+    const vendorData = {
+      vendorName: faker.company.companyName(),
+      street: faker.address.street(),
+      city: faker.address.city(),
+      state: faker.address.state(),
+      zip: faker.address.zipCode("#####"),
+    };
 
-    const contact = [];
+    const newVendor = await Vendor.create(vendorData);
+    // const newVendorId = newVendor._id.toString().split('"')[0];
+
+    // add contactData to vendor
     for (let i = 0; i < 2; i++) {
-      const contactName = faker.name.findName();
-      const title = faker.name.jobTitle();
-      const email = faker.internet.email();
-      const phoneNumber = faker.phone.number("###-###-####");
+      const contactData = {
+        contactName: faker.name.findName(),
+        title: faker.name.jobTitle(),
+        email: faker.internet.email(),
+        phoneNumber: faker.phone.number("###-###-####"),
+      };
 
-      contact.push({ contactName, title, email, phoneNumber });
+      await Vendor.findByIdAndUpdate(
+        { _id: newVendor._id },
+        { $addToSet: { contact: contactData } },
+        { runValidators: true }
+      );
     }
 
-    const notes = [];
+    // add note data
     for (let i = 0; i < 2; i++) {
-      const notesBody = faker.lorem.text();
-      notes.push({ notesBody });
-    }
+      const notesData = {
+        notesBody: faker.lorem.text(10),
+      };
 
-    VendorData.push({
-      vendorName,
-      street,
-      city,
-      state,
-      zip,
-      contact,
-      notes,
-    });
+      await Vendor.findByIdAndUpdate(
+        { _id: newVendor._id },
+        { $addToSet: { notes: notesData } },
+        { runValidators: true }
+      );
+    }
   }
 
-  await Vendor.collection.insertMany(VendorData);
+  // returns an array of all created vendors
   const createdVendors = await Vendor.find();
 
   // Product Data (name, SKU, stock, description, color, vendor)
@@ -73,13 +80,12 @@ db.once("open", async () => {
       vendor: randomVendor._id,
     };
 
-    await Product.collection.insertOne(ProductData);
-    const createdProduct = await Product.findOne({ SKU: ProductData.SKU });
+    const newProduct = await Product.create(ProductData);
 
     // add the newly created product to the vendor
-    await Vendor.collection.updateOne(
+    await Vendor.findByIdAndUpdate(
       { _id: randomVendor._id },
-      { $push: { products: { _id: createdProduct._id } } },
+      { $addToSet: { products: { _id: newProduct._id } } },
       { runValidators: true }
     );
   }

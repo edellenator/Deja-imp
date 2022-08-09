@@ -1,41 +1,19 @@
-import React, {useEffect} from "react";
-import { Link } from "react-router-dom";
 import ProductList from "../components/ProductList";
+import { useQuery } from '@apollo/client';
+import { QUERY_PRODUCTS } from "../utils/queries";
 
 
 const Products = () => {
-    // temporary test data
-    const products = [
-        {
-            id: "1",
-            name: "product 1",
-            sku: 'abc123',
-            stock: "10"
-        },
-        {
-            id: "2",
-            name: "product 2",
-            sku: 'abc123',
-            stock: "20"
-        },
-        {
-            id: "3",
-            name: "product 3",
-            sku: 'abc123',
-            stock: "30"
-        },
-        {
-            id: "4",
-            name: "product 4",
-            sku: 'abc123',
-            stock: "40"
-        },
-        
-    ]
+    const { data } = useQuery(QUERY_PRODUCTS);
+    const products = data?.products || [];
+
     return (
-        <ProductList products={products} />
+        <div>
+            <ProductList
+                products={products}
+            />
+        </div>
     );
-    
 }
 
 export default Products;
