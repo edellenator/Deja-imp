@@ -83,7 +83,7 @@ db.once("open", async () => {
     const newProduct = await Product.create(ProductData);
 
     // add the newly created product to the vendor
-    await Vendor.collection.findOneAndUpdate(
+    await Vendor.findByIdAndUpdate(
       { _id: randomVendor._id },
       { $addToSet: { products: { _id: newProduct._id } } },
       { runValidators: true }
