@@ -110,6 +110,7 @@ const Vendor = () => {
     //     },
     // ]
     const {id: _id} = useParams();
+    console.log(_id)
 
     const { loading, data } = useQuery(QUERY_VENDOR, {
         variables:{ id: _id }
@@ -174,15 +175,15 @@ const Vendor = () => {
     };
     
     if (loading) {
-        return <h1>Loading...</h1>
+        return <h1 className="justify-center">Loading...</h1>
     }
-
+    
     return (
         <section className="container">
-
+            {console.log(vendor)}
             <div className="flex-row col-9">
                 <h1 className="col-3">{vendor.name}</h1>
-                <Link to={`/editVendor/${vendor.id}`}>
+                <Link to={`/editVendor/${vendor._id}`}>
                     <button className="btn col-3">Edit Vendor</button>
                 </Link>
             </div>
@@ -201,12 +202,12 @@ const Vendor = () => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {vendor.contacts.map((contact) => 
-                                        <tr key={contact.id}>
-                                            <td>{contact.name}</td>
+                                    {vendor.contact.map((contact) => 
+                                        <tr key={contact.phoneNumber}>
+                                            <td>{contact.contactName}</td>
                                             <td>{contact.title}</td>
                                             <td>{contact.email}</td>
-                                            <td>{contact.phone}</td>
+                                            <td>{contact.phoneNumber}</td>
                                         </tr>
                                     )}
                                 </tbody>
