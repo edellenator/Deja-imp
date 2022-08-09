@@ -16,6 +16,7 @@ const VendorForm = (props) => {
 
   const [contactFormData, setContactFormData] = useState(emptyContactForm);
   const [showModal, setShowModal] = useState(false);
+
   const [addVendor, { loading: addLoading, error: addError }] =
     useMutation(ADD_VENDOR);
 
@@ -83,9 +84,13 @@ const VendorForm = (props) => {
 
   const handleUpdateVendor = async (event) => {
     event.preventDefault();
+    console.log(id, vendorFormData);
     try {
       await updateVendor({
-        variables: { id, input: vendorFormData },
+        variables: {
+          input: vendorFormData,
+          id,
+        },
       });
       setShowModal(true);
     } catch (error) {

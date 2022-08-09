@@ -203,7 +203,7 @@ export const UPDATE_VENDOR = gql`
     updateVendor(_id: $id, input: $input) {
       _id
       vendorName
-      phoneNumber
+
       street
       state
       zip
@@ -213,6 +213,7 @@ export const UPDATE_VENDOR = gql`
         contactName
         title
         email
+        phoneNumber
       }
       products {
         _id
