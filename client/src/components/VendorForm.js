@@ -1,25 +1,36 @@
 import React, { useState } from "react";
-import { useMutation } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import { ADD_VENDOR, UPDATE_VENDOR } from "../utils/mutations";
+import { QUERY_VENDOR } from "../utils/queries";
 import { capitalizeFirstLetter } from "../utils/helpers";
 
 const VendorForm = (props) => {
-  const {
-    vendorFormData,
-    setVendorFormData,
-    contactFormData,
-    setContactFormData,
-    emptyContactForm,
-    emptyVendorForm,
-    id,
-  } = props;
+  const { vendorFormData, setVendorFormData, emptyVendorForm, id } = props;
 
+  const emptyContactForm = {
+    contactName: "",
+    title: "",
+    email: "",
+    phoneNumber: "",
+  };
+
+  const [contactFormData, setContactFormData] = useState(emptyContactForm);
   const [showModal, setShowModal] = useState(false);
   const [addVendor, { loading: addLoading, error: addError }] =
     useMutation(ADD_VENDOR);
-  //   const [updateVendor, { loading: updateLoading, error: updateError }] =
-  //     useMutation(UPDATE_VENDOR);
-  //   const [updateContact, { loading: contactLoading, error: contactError }] = useMutation(UPDATE_CONTACT);
+
+  const [updateVendor, { loading: updateLoading, error: updateError }] =
+    useMutation(UPDATE_VENDOR);
+
+  const { loading } = useQuery(QUERY_VENDOR, {
+    variables: { id },
+    onCompleted: (data) => {
+      console.log("success");
+      const { vendor } = data;
+      const { vendorName, street, city, state, zip } = vendor;
+      setVendorFormData({ vendorName, street, city, state, zip });
+    },
+  });
 
   const handleReset = () => {
     setContactFormData(emptyContactForm);
@@ -74,9 +85,8 @@ const VendorForm = (props) => {
     event.preventDefault();
     try {
       await updateVendor({
-        variables: { input: vendorFormData },
+        variables: { id, input: vendorFormData },
       });
-      await updateContact({ variables: { input: contactFormData } });
       setShowModal(true);
     } catch (error) {
       console.log(error);
@@ -89,8 +99,7 @@ const VendorForm = (props) => {
     setContactFormData(emptyContactForm);
   };
 
-  const { vendorName, street, city, state, zip, notes } = vendorFormData;
-
+  const { vendorName, street, city, state, zip } = vendorFormData;
   const { contactName, title, email, phoneNumber } = contactFormData;
 
   return (
@@ -125,46 +134,50 @@ const VendorForm = (props) => {
                 value={vendorName}
                 onChange={handleChangeVendor}
               />
-              <label className="form-label" htmlFor="contactName">
-                Vendor Contact
-              </label>
-              <input
-                className="form-input"
-                name="contactName"
-                type="text"
-                value={contactName}
-                onChange={handleChangeContact}
-              />
-              <label className="form-label" htmlFor="title">
-                Title
-              </label>
-              <input
-                className="form-input"
-                name="title"
-                type="text"
-                value={title}
-                onChange={handleChangeContact}
-              />
-              <label className="form-label" htmlFor="email">
-                Email
-              </label>
-              <input
-                className="form-input"
-                name="email"
-                type="email"
-                value={email}
-                onChange={handleChangeContact}
-              />
-              <label className="form-label" htmlFor="phoneNumber">
-                Phone
-              </label>
-              <input
-                className="form-input"
-                name="phoneNumber"
-                type="tel"
-                value={phoneNumber}
-                onChange={handleChangeContact}
-              />
+              {!id && (
+                <>
+                  <label className="form-label" htmlFor="contactName">
+                    Vendor Contact
+                  </label>
+                  <input
+                    className="form-input"
+                    name="contactName"
+                    type="text"
+                    value={contactName}
+                    onChange={handleChangeContact}
+                  />
+                  <label className="form-label" htmlFor="title">
+                    Title
+                  </label>
+                  <input
+                    className="form-input"
+                    name="title"
+                    type="text"
+                    value={title}
+                    onChange={handleChangeContact}
+                  />
+                  <label className="form-label" htmlFor="email">
+                    Email
+                  </label>
+                  <input
+                    className="form-input"
+                    name="email"
+                    type="email"
+                    value={email}
+                    onChange={handleChangeContact}
+                  />
+                  <label className="form-label" htmlFor="phoneNumber">
+                    Phone
+                  </label>
+                  <input
+                    className="form-input"
+                    name="phoneNumber"
+                    type="tel"
+                    value={phoneNumber}
+                    onChange={handleChangeContact}
+                  />
+                </>
+              )}
               <label className="form-label" htmlFor="street">
                 Street
               </label>
@@ -217,21 +230,19 @@ const VendorForm = (props) => {
                 onChange={handleChangeVendor}
               /> */}
               <button type="reset" className="btn">
-                {id ? "Reset Form" : "Clear Form"}
+                Clear Form
               </button>
-              {/* {addLoading || updateLoading ? ( */}
-              {addLoading ? (
+              {addLoading || updateLoading ? (
                 <button className="btn">Submitting...</button>
               ) : (
                 <button type="submit" className="btn">
                   {id ? "Edit Vendor" : "Add Vendor"}
                 </button>
               )}
-              {/* {addError ||
-                (updateError && ( */}
-              {addError && (
-                <p className="text-tertiary">Something went wrong!</p>
-              )}
+              {addError ||
+                (updateError && (
+                  <p className="text-tertiary">Something went wrong!</p>
+                ))}
             </div>
           </div>
         </form>

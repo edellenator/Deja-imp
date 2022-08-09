@@ -199,7 +199,7 @@ export const UPDATE_STOCK = gql`
 `;
 
 export const UPDATE_VENDOR = gql`
-  mutation updateVendor($id: ID!, $input: VendorInput) {
+  mutation updateVendor($id: ID!, $input: VendorInput!) {
     updateVendor(_id: $id, input: $input) {
       _id
       vendorName
