@@ -17,7 +17,7 @@ const ProductList = ({products}) => {
                         {products.map((product) => 
                         <tr key={product.id} className="text-center">
                             <td><Link to={`/product/${product.id}`}>{product.name}</Link></td>
-                            <td>{product.sku}</td>
+                            <td>{product.SKU}</td>
                             <td>{product.stock}</td>
                         </tr>
                         )}
