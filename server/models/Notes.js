@@ -1,26 +1,24 @@
-const { Schema } = require('mongoose')
-const dateFormat = require('../utils/dateFormat');
+const { Schema } = require("mongoose");
+const dateFormat = require("../utils/dateFormat");
 
-const notesSchema = new Schema( 
-    { 
-        notesBody: { 
-            type: String, 
-            required: true,
-            maxlength: 280
-        }, 
+const notesSchema = new Schema(
+  {
+    notesBody: {
+      type: String,
+      required: true,
+    },
 
-        createdAt: { 
-            type: Date, 
-            default: Date.now, 
-            get: timestamp => dateFormat(timestamp)
-        }
-    }, 
-    {
-        toJSON: {
-            getters: true
-        }
-    }
-)
+    createdAt: {
+      type: Date,
+      default: Date.now,
+      get: (timestamp) => dateFormat(timestamp),
+    },
+  },
+  {
+    toJSON: {
+      getters: true,
+    },
+  }
+);
 
-module.exports = notesSchema; 
-
+module.exports = notesSchema;
