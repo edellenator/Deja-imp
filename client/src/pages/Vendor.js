@@ -2,117 +2,125 @@ import React, {useEffect, useState} from "react";
 import { Link, useParams } from "react-router-dom";
 import { useQuery, useMutation } from "@apollo/client";
 import ProductList from "../components/ProductList";
-// import QUERY_VENDOR from
+import { QUERY_VENDOR } from "../utils/queries"
+import { ADD_NOTE, ADD_CONTACT } from "../utils/mutations"
+
 const Vendor = () => {
     // temporary test data
-    const vendors = [
-        {
-            id: "1",
-            name: "Vendor 1",
-            contacts: [
-                {
-                    id: "1",
-                    name:"Erik Dell",
-                    title: "Da Baby",
-                    email: "edellenator@gmail.com",
-                    phone: "555-555-5555",
-                },
-                {
-                    id: "2",
-                    name:"Joel Abankwah",
-                    title: "Da Ba-ba-ba-b0ss",
-                    email: "daBoss@gmail.com",
-                    phone: "555-555-5555",
-                }
-            ],
-            street: "1234 vendor street",
-            city: "Vendorville",
-            state: "Vendorginia",
-            zip: "12345",
-            notes: [
-                {
-                    id: '1',
-                    text:"This vendor has a note",
-                    dateCreated:"10/10/2020 6:00pm",
-                    author: "User 1"
-                },
-                {
-                    id: '2',
-                    text:"This vendor has another note",
-                    dateCreated:"10/10/2020 6:00pm",
-                    author: "User 2"
-                }
-            ],
-            products: [
-                {
-                    id: '1',
-                    name: 'item 1',
-                    stock: 100
-                },
-                {
-                    id: '2',
-                    name: 'item 2',
-                    stock: 50
-                }
-            ]
-        },
-        {
-            id: "2",
-            name: "Vendor 2",
-            contacts: [
-                {
-                    id: "1",
-                    name:"Debbie Neflas",
-                    title: "The Don",
-                    email: "TheDon@gmail.com",
-                    phone: "555-555-5555",
-                },
-                {
-                    id: "2",
-                    name:"Akeva Melchor",
-                    title: "El Jefe",
-                    email: "ElJefe@gmail.com",
-                    phone: "555-555-5555",
-                }
-            ],
-            street: "1234 vendor street",
-            city: "Vendorville",
-            state: "Vendorginia",
-            zip: "12345",
-            notes: [
-                {
-                    id: '1',
-                    text:"This vendor has a note",
-                    dateCreated:"10/10/2020 6:00pm",
-                    author: "User 1"
-                },
-                {
-                    id: '2',
-                    text:"This vendor has another note",
-                    dateCreated:"10/10/2020 6:00pm",
-                    author: "User 2"
-                }
-            ],
-            products: [
-                {
-                    id: '1',
-                    name: 'item 1',
-                    stock: 100
-                },
-                {
-                    id: '2',
-                    name: 'item 2',
-                    stock: 50
-                }
-            ]
-        },
-    ]
+    // const vendors = [
+    //     {
+    //         id: "1",
+    //         name: "Vendor 1",
+    //         contacts: [
+    //             {
+    //                 id: "1",
+    //                 name:"Erik Dell",
+    //                 title: "Da Baby",
+    //                 email: "edellenator@gmail.com",
+    //                 phone: "555-555-5555",
+    //             },
+    //             {
+    //                 id: "2",
+    //                 name:"Joel Abankwah",
+    //                 title: "Da Ba-ba-ba-b0ss",
+    //                 email: "daBoss@gmail.com",
+    //                 phone: "555-555-5555",
+    //             }
+    //         ],
+    //         street: "1234 vendor street",
+    //         city: "Vendorville",
+    //         state: "Vendorginia",
+    //         zip: "12345",
+    //         notes: [
+    //             {
+    //                 id: '1',
+    //                 text:"This vendor has a note",
+    //                 dateCreated:"10/10/2020 6:00pm",
+    //                 author: "User 1"
+    //             },
+    //             {
+    //                 id: '2',
+    //                 text:"This vendor has another note",
+    //                 dateCreated:"10/10/2020 6:00pm",
+    //                 author: "User 2"
+    //             }
+    //         ],
+    //         products: [
+    //             {
+    //                 id: '1',
+    //                 name: 'item 1',
+    //                 stock: 100
+    //             },
+    //             {
+    //                 id: '2',
+    //                 name: 'item 2',
+    //                 stock: 50
+    //             }
+    //         ]
+    //     },
+    //     {
+    //         id: "2",
+    //         name: "Vendor 2",
+    //         contacts: [
+    //             {
+    //                 id: "1",
+    //                 name:"Debbie Neflas",
+    //                 title: "The Don",
+    //                 email: "TheDon@gmail.com",
+    //                 phone: "555-555-5555",
+    //             },
+    //             {
+    //                 id: "2",
+    //                 name:"Akeva Melchor",
+    //                 title: "El Jefe",
+    //                 email: "ElJefe@gmail.com",
+    //                 phone: "555-555-5555",
+    //             }
+    //         ],
+    //         street: "1234 vendor street",
+    //         city: "Vendorville",
+    //         state: "Vendorginia",
+    //         zip: "12345",
+    //         notes: [
+    //             {
+    //                 id: '1',
+    //                 text:"This vendor has a note",
+    //                 dateCreated:"10/10/2020 6:00pm",
+    //                 author: "User 1"
+    //             },
+    //             {
+    //                 id: '2',
+    //                 text:"This vendor has another note",
+    //                 dateCreated:"10/10/2020 6:00pm",
+    //                 author: "User 2"
+    //             }
+    //         ],
+    //         products: [
+    //             {
+    //                 id: '1',
+    //                 name: 'item 1',
+    //                 stock: 100
+    //             },
+    //             {
+    //                 id: '2',
+    //                 name: 'item 2',
+    //                 stock: 50
+    //             }
+    //         ]
+    //     },
+    // ]
+    const {id: _id} = useParams();
 
-    const {id: id} = useParams();
+    const { loading, data } = useQuery(QUERY_VENDOR, {
+        variables:{ id: _id }
+    })
+
+    const vendor = data?.vendor || {}
+    
     // temp find in array to test useParams data
-    const vendor = vendors.find(vendor => {
-        return vendor.id === id
-    });
+    // const vendor = vendors.find(vendor => {
+    //     return vendor.id === id
+    // });
 
     const [contactFormData, setContactFormData] = useState({
         contactName: "",
@@ -154,17 +162,21 @@ const Vendor = () => {
 
     const handleNoteFormChange = (e) => {
         const {name, value} = e.target;
-        setContactFormData({
+        setNoteFormData({
             ...noteFormData,
             [name]: value
         });
         console.log(noteFormData);
     };
 
-    const handleNoteFormSubmit = (e) => {
+    const handleNoteFormSubmit = async (e) => {
         e.preventDefault();
     };
-    // const { loading, data } = useQuery(QUERY_VENDOR)
+    
+    if (loading) {
+        return <h1>Loading...</h1>
+    }
+
     return (
         <section className="container">
 
