@@ -1,11 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import Auth from "../utils/auth";
 
 const Nav = (props) => {
   const { currentPage, setCurrentPage } = props;
 
   // temp test data, update to use Auth
-  const loggedIn = true;
+  const loggedIn = Auth.loggedIn();
 
   return (
     <nav className="flex-row">
@@ -41,7 +42,9 @@ const Nav = (props) => {
           >
             Products
           </Link>
-          <a className="ml-2 my-1 px-3 mx-5 py-2">Logout</a>
+          <a className="ml-2 my-1 px-3 mx-5 py-2" onClick={() => Auth.logout()}>
+            Logout
+          </a>
         </>
       ) : (
         <Link

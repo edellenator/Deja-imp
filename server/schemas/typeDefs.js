@@ -14,6 +14,7 @@ const typeDefs = gql`
     title: String
     email: String
     phoneNumber: String
+
   }
 
   input ProductInput {
