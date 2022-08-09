@@ -3,7 +3,6 @@ const { gql } = require("apollo-server-express");
 const typeDefs = gql`
   input VendorInput {
     vendorName: String
-    phoneNumber: String
     street: String
     city: String
     state: String
@@ -14,6 +13,8 @@ const typeDefs = gql`
     contactName: String
     title: String
     email: String
+    phoneNumber: String
+
   }
 
   input ProductInput {
@@ -52,7 +53,6 @@ const typeDefs = gql`
     _id: ID
     vendorName: String
     contact: [Contact]
-    phoneNumber: String
     street: String
     city: String
     state: String
@@ -71,10 +71,11 @@ const typeDefs = gql`
     contactName: String
     title: String
     email: String
+    phoneNumber: String
   }
 
   type Query {
-    me: User
+    me: Auth
     user(_id: ID!): User
     users: [User]
     vendor(_id: ID!): Vendor
@@ -91,6 +92,7 @@ const typeDefs = gql`
       contactName: String
       title: String
       email: String
+      phoneNumber: String
     ): Vendor
     updateVendor(_id: ID!, input: VendorInput!): Vendor
     deleteVendor(_id: ID!): Vendor

@@ -24,7 +24,6 @@ db.once("open", async () => {
   let VendorData = [];
   for (let i = 0; i < 10; i++) {
     const vendorName = faker.company.companyName();
-    const phoneNumber = faker.phone.number();
     const street = faker.address.street();
     const city = faker.address.city();
     const state = faker.address.state();
@@ -35,19 +34,19 @@ db.once("open", async () => {
       const contactName = faker.name.findName();
       const title = faker.name.jobTitle();
       const email = faker.internet.email();
+      const phoneNumber = faker.phone.number("###-###-####");
 
-      contact.push({ contactName, title, email });
+      contact.push({ contactName, title, email, phoneNumber });
     }
 
     const notes = [];
     for (let i = 0; i < 2; i++) {
-      const noteBody = faker.lorem.text();
-      notes.push({ noteBody });
+      const notesBody = faker.lorem.text();
+      notes.push({ notesBody });
     }
 
     VendorData.push({
       vendorName,
-      phoneNumber,
       street,
       city,
       state,
