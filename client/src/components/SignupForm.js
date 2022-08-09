@@ -15,28 +15,33 @@ const SignUpForm = ({ setRegistered }) => {
   const [addUser, { loading }] = useMutation(ADD_USER);
 
   const handleInputChange = (event) => {
-    if (event.target.name === "email") {
-      const isValid = validateEmail(event.target.value);
-      if (!isValid) {
-        setErrorMessage("Your email is invalid");
-      } else {
-        setErrorMessage("");
-      }
-    } else {
-      if (!event.target.value.length) {
-        setErrorMessage(
-          capitalizeFirstLetter(`${event.target.name} is required.`)
-        );
-      } else {
-        setErrorMessage("");
-      }
-    }
-    if (!errorMessage) {
-      setUserFormData({
-        ...userFormData,
-        [event.target.name]: event.target.value,
-      });
-    }
+    // if (event.target.name === "email") {
+    //   const isValid = validateEmail(event.target.value);
+    //   if (!isValid) {
+    //     setErrorMessage("Your email is invalid");
+    //   } else {
+    //     setErrorMessage("");
+    //   }
+    // } else {
+    //   if (!event.target.value.length) {
+    //     setErrorMessage(
+    //       capitalizeFirstLetter(`${event.target.name} is required.`)
+    //     );
+    //   } else {
+    //     setErrorMessage("");
+    //   }
+    // }
+    // if (!errorMessage) {
+    //   setUserFormData({
+    //     ...userFormData,
+    //     [event.target.name]: event.target.value,
+    //   });
+
+    // }
+
+    const { name, value } = event.target;
+    setUserFormData({ ...userFormData, [name]: value });
+    console.log(userFormData);
   };
 
   const handleFormSubmit = async (event) => {
@@ -67,8 +72,8 @@ const SignUpForm = ({ setRegistered }) => {
         className="form-input"
         placeholder="email"
         type="email"
-        onBlur={handleInputChange}
-        defaultValue={email}
+        onChange={handleInputChange}
+        value={email}
       />
       <label htmlFor="username" className="form-label">
         Username:
@@ -78,8 +83,8 @@ const SignUpForm = ({ setRegistered }) => {
         className="form-input"
         placeholder="username"
         type="text"
-        onBlur={handleInputChange}
-        defaultValue={username}
+        onChange={handleInputChange}
+        value={username}
       />
       <label htmlFor="password" className="form-label">
         Password:
@@ -89,8 +94,8 @@ const SignUpForm = ({ setRegistered }) => {
         className="form-input"
         placeholder="password"
         type="password"
-        onBlur={handleInputChange}
-        defaultValue={password}
+        onChange={handleInputChange}
+        value={password}
       />
       {errorMessage && <p className="text-tertiary">{errorMessage}</p>}
       {loading ? (
