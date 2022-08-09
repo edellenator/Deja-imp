@@ -41,7 +41,7 @@ db.once("open", async () => {
 
     const notes = [];
     for (let i = 0; i < 2; i++) {
-      const noteBody = faker.lorem.text();
+      const notesBody = faker.lorem.text();
       notes.push({ noteBody });
     }
 
