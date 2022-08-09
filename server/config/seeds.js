@@ -34,7 +34,7 @@ db.once("open", async () => {
       const contactName = faker.name.findName();
       const title = faker.name.jobTitle();
       const email = faker.internet.email();
-      const phoneNumber = faker.phone.number();
+      const phoneNumber = faker.phone.number("###-###-####");
 
       contact.push({ contactName, title, email, phoneNumber });
     }
