@@ -42,7 +42,7 @@ db.once("open", async () => {
     const notes = [];
     for (let i = 0; i < 2; i++) {
       const notesBody = faker.lorem.text();
-      notes.push({ noteBody });
+      notes.push({ notesBody });
     }
 
     VendorData.push({
