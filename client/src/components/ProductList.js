@@ -15,8 +15,8 @@ const ProductList = ({products}) => {
                     </thead>
                     <tbody>
                         {products.map((product) => 
-                        <tr key={product.id} className="text-center">
-                            <td><Link to={`/product/${product.id}`}>{product.name}</Link></td>
+                        <tr key={product._id} className="text-center">
+                            <td><Link to={`/product/${product._id}`}>{product.name}</Link></td>
                             <td>{product.SKU}</td>
                             <td>{product.stock}</td>
                         </tr>
