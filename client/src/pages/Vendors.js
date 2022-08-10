@@ -1,33 +1,44 @@
 import React, {useEffect} from "react";
+import { useQuery } from "@apollo/client";
 import { Link } from "react-router-dom";
+import { QUERY_VENDORS } from "../utils/queries";
 
 
 const Vendors = () => {
     // temporary test data
-    const vendors = [
-        {
-            id: "1",
-            name: "vendor1",
-            productCount: "10"
-        },
-        {
-            id: "2",
-            name: "vendor2",
-            productCount: "200"
-        },
-        {
-            id: "3",
-            name: "vendor3",
-            productCount: "15"
-        },
-        {
-            id: "4",
-            name: "vendor3",
-            productCount: "69"
-        }
-    ]
+    // const vendors = [
+    //     {
+    //         id: "1",
+    //         name: "vendor1",
+    //         productCount: "10"
+    //     },
+    //     {
+    //         id: "2",
+    //         name: "vendor2",
+    //         productCount: "200"
+    //     },
+    //     {
+    //         id: "3",
+    //         name: "vendor3",
+    //         productCount: "15"
+    //     },
+    //     {
+    //         id: "4",
+    //         name: "vendor3",
+    //         productCount: "69"
+    //     }
+    // ]
+    const {loading, data} = useQuery(QUERY_VENDORS);
+
+    const vendors = data?.vendors || {};
+
+    if (loading) {
+        return <h1>Loading...</h1>
+    }
+
     return (
         <section className="container">
+            {console.log(vendors)}
             <div className="row">
                 <table className="table m-5">
                     <thead>
@@ -38,9 +49,9 @@ const Vendors = () => {
                     </thead>
                     <tbody>
                         {vendors.map((vendor) => 
-                        <tr key={vendor.id} className="text-center">
-                            <td><Link to={`/vendor/${vendor.id}`}>{vendor.name}</Link></td>
-                            <td>{vendor.productCount}</td>
+                        <tr key={vendor._id} className="text-center">
+                            <td><Link to={`/vendor/${vendor._id}`}>{vendor.vendorName}</Link></td>
+                            <td>{vendor.products.length}</td>
                         </tr>
                         )}
                     </tbody>

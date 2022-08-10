@@ -71,7 +71,7 @@ export const ADD_VENDOR = gql`
 `;
 
 export const ADD_CONTACT = gql`
-  mutation addContact($input: ContactInput, $vendorId: ID!) {
+  mutation addContact($input: ContactInput!, $vendorId: ID!) {
     addContact(input: $input, vendorId: $vendorId) {
       _id
       vendorName

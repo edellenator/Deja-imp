@@ -1,106 +1,73 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import { useMutation, useQuery } from "@apollo/client";
+import { QUERY_PRODUCT } from "../utils/queries";
+import { UPDATE_STOCK } from '../utils/mutations'
 
 const Product = () => {
-    // Sample product data
-    const products = [
-        {
-            id: "1",
-            name: "product 1",
-            sku: "ABC123-1",
-            vendor: "Vendor 1",
-            description: "red rum",
-            colors: ["Red"],
-            stock: 10
-        },    
-        {
-            id: "2",
-            name: "product 2",
-            sku: "ABC123-2",
-            vendor: "Vendor 1",
-            description: "monkeys on a bed",
-            colors: ["Red", "Beige"],
-            stock: 79
-        },    
-        {
-            id: "3",
-            name: "product 3",
-            sku: "ABC123-3",
-            vendor: "Vendor 3",
-            description: "Floral Damask",
-            colors: ["Purple", "Yellow", "Green"],
-            stock: 105
-        },    
-        {
-            id: "4",
-            name: "product 4",
-            sku: "ABC123-4",
-            vendor: "Vendor 4",
-            description: "City Scape at Night",
-            colors: ["Gray", "Yellow", "Navy"],
-            stock: 84
-        },    
-    ]
-
-    const {id: id} = useParams();
-
-    const data = products.find(data => {
-        return data.id === id
-    });
-
-    const [currentStock, setStock] = useState(() => {
-        if(data) {
-           return data.stock
-        }
-        else {
-            return "...loading"
-        }
-    }
-        
-    )
-
+    const {id: id} = useParams();   
     const [adjustStock, setAdjustStock] = useState(0)
 
-    const handleFormChange = (event) => {
-        event.preventDefault();
-        setAdjustStock(parseInt(event.target.value));
-    }
-    const handleSubmit = (event) => {
-        event.preventDefault();
+    const { loading, data } = useQuery(QUERY_PRODUCT, {
+        variables: { id: id },
+    });
 
-        setStock(currentStock + adjustStock);
-       
-    };
+    const [updateStock, {error}] = useMutation(UPDATE_STOCK);
 
-    return (
-        <section className="container">
-            <div className="flex-row">
-                <div className="flex-column col-6">
-                    <h2>{data.name}</h2>
-                    <div className="card my-2 ml-5">
-                        <h4>SKU: <span>{data.sku}</span></h4>
-                        <h4>Vendor: <span>{data.vendor}</span></h4>
-                        <h4>Description: <span>{data.description}</span></h4>
-                        <h4>Colors: {data.colors.map((color, i, arr) =>
-                        i < arr.length - 1 ? <span key={data.id}>{color}, </span> : <span key={data.id}>{color}</span>
-                        )}
-                        </h4>
+    const product = data?.product || [];
+
+        const [currentStock, setStock] = useState(product.stock || 0);
+
+         if (currentStock === 0 && product.stock) {
+            setStock(product.stock);
+         };
+
+        const handleFormChange = (event) => {
+            event.preventDefault();
+            setAdjustStock(event.target.value);
+        };
+
+        const handleSubmit = async event => {
+            event.preventDefault();
+            const newStock = parseInt(currentStock) + parseInt(adjustStock);
+
+            try {
+                  await updateStock({
+                    variables: { id: product._id, stock: newStock }
+                })
+            } catch (err) {
+                console.log(err)
+            }
+            window.location.reload();
+        };
+
+        return (
+            <section className="container">
+                {loading ? (
+                    <div>loading</div>
+                ) : (
+                    <div className="flex-row mt-5">
+                    <div className="card col-6 mr-1">
+                        <h2 className="mb-3 card-header my-0 text-center">Product: {product.name}</h2>
+                        <div className="card-body bg-primary">
+                            <h4 className="bg-secondary mb-1 pl-2">SKU: {product.SKU}</h4>
+                            <h4 className="bg-secondary mb-1 pl-2">Vendor: {product.vendor.vendorName}</h4>
+                            <h4 className="bg-secondary mb-1 pl-2">Description: {product.description}</h4>
+                            <h4 className="bg-secondary mb-1 pl-2">Colors: {product.color}</h4>
+                        </div>
+                    </div>
+                    <div className="card col-6 ml-2">
+                        <h2 className="card-header my-0 text-center">Stock: {currentStock}</h2>
+                        <form className="form flex-row card-body mt-4" onChange={handleFormChange}>
+                            <label htmlFor="stock" className="form-label">Adjust stock by: </label>
+                            <input className="form-input" name="stock" id="stock" type="number"/>
+                            <button className="btn" type="button" onClick={handleSubmit}>Submit</button>
+                        </form>
                     </div>
                 </div>
-                <div className="flex-column col-6 ml-2">
-                    <h2>Stock: {currentStock}</h2>
-                    <form className="form flex-row" onSubmit={handleSubmit}>
-                        <label htmlFor="stock" className="form-label">Adjust stock by: </label>
-                        <input className="form-input" name="stock" id="stock" type="number" onChange={handleFormChange} />
-                        <button className="btn" type="submit">Submit</button>
-                    </form>
-                    
-                    
-
-                </div>
-            </div>
+                )}
         </section>
-    )
+       )
 }
 
 export default Product;

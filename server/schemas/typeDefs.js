@@ -65,6 +65,7 @@ const typeDefs = gql`
     notesBody: String
     createdAt: String
   }
+
   type Contact {
     _id: ID
     contactName: String
