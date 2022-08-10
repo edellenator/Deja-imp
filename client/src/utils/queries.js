@@ -91,7 +91,9 @@ export const QUERY_VENDOR = gql`
         _id
         notesBody
         createdAt
-        author
+        author {
+          _id
+        }
       }
     }
   }
@@ -125,7 +127,9 @@ export const QUERY_VENDORS = gql`
         _id
         notesBody
         createdAt
-        author
+        author {
+          _id
+        }
       }
     }
   }

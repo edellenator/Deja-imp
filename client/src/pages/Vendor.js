@@ -199,7 +199,7 @@ const Vendor = () => {
             await addNote({
                 variables: {
                     noteBody: noteBody,
-                    vendorId: vendorId
+                    vendorId: vendorId,
                 }
             })
         } catch (noteErr) {
@@ -215,7 +215,6 @@ const Vendor = () => {
     
     return (
         <section className="container">
-            {/* {console.log(vendor)} */}
             <div className="flex-row col-9">
                 <h1 className="col-3">{vendor.name}</h1>
                 <Link to={`/editVendor/${vendor._id}`}>

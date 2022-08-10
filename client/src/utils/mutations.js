@@ -176,7 +176,9 @@ export const ADD_NOTE = gql`
         _id
         notesBody
         createdAt
-        author
+        author {
+          _id
+        }
       }
     }
   }
