@@ -340,6 +340,12 @@ hr.rounded {
   content: "- ";
 }
 
+.card-text {
+  background-color: var(--secondary);
+  padding: var(--spacing-one);
+  margin-bottom: var(--spacing-one);
+}
+
 /* FORM */
 .form-label,
 .form-input,

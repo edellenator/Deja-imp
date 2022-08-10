@@ -46,22 +46,22 @@ const Product = () => {
                 {loading ? (
                     <div>loading</div>
                 ) : (
-                    <div className="flex-row mt-5">
-                    <div className="card col-6 mr-1">
+                    <div className="flex-row justify-space-between mt-5">
+                    <div className="card col-6">
                         <h2 className="mb-3 card-header my-0 text-center">Product: {product.name}</h2>
                         <div className="card-body bg-primary">
-                            <h4 className="bg-secondary mb-1 pl-2">SKU: {product.SKU}</h4>
-                            <h4 className="bg-secondary mb-1 pl-2">Vendor: {product.vendor.vendorName}</h4>
-                            <h4 className="bg-secondary mb-1 pl-2">Description: {product.description}</h4>
-                            <h4 className="bg-secondary mb-1 pl-2">Colors: {product.color}</h4>
+                            <h4 className="card-text">SKU: {product.SKU}</h4>
+                            <h4 className="card-text">Vendor: {product.vendor.vendorName}</h4>
+                            <h4 className="card-text">Description: {product.description}</h4>
+                            <h4 className="card-text">Colors: {product.color}</h4>
                         </div>
                     </div>
-                    <div className="card col-6 ml-2">
+                    <div className="card col-6">
                         <h2 className="card-header my-0 text-center">Stock: {currentStock}</h2>
-                        <form className="form flex-row card-body mt-4" onChange={handleFormChange}>
+                        <form className="form flex-row card-body mt-4" onSubmit={handleSubmit} onChange={handleFormChange}>
                             <label htmlFor="stock" className="form-label">Adjust stock by: </label>
                             <input className="form-input" name="stock" id="stock" type="number"/>
-                            <button className="btn" type="button" onClick={handleSubmit}>Submit</button>
+                            <button className="btn" type="submit">Submit</button>
                         </form>
                     </div>
                 </div>
