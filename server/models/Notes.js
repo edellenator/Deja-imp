@@ -14,6 +14,10 @@ const notesSchema = new Schema(
       default: Date.now,
       get: (timestamp) => dateFormat(timestamp),
     },
+    author: {
+      type: Schema.Types.ObjectId,
+      ref: "User"
+    }
   },
   {
     toJSON: {

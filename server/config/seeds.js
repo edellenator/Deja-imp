@@ -48,12 +48,14 @@ db.once("open", async () => {
         { runValidators: true }
       );
     }
-
+    const randomUserIndex = Math.floor(Math.random() * userData.length);
+    const randomUserId = userData[randomUserIndex]._id
     // add note data
     for (let i = 0; i < 2; i++) {
       const notesData = {
         notesBody: faker.lorem.text(10),
-      };
+        author: randomUserId
+      }
 
       await Vendor.findByIdAndUpdate(
         { _id: newVendor._id },

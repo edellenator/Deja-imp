@@ -149,8 +149,8 @@ export const DELETE_NOTE = gql`
 `;
 
 export const ADD_NOTE = gql`
-  mutation addNote($vendorId: ID!, $noteBody: String!) {
-    addNote(vendorId: $vendorId, notesBody: $noteBody) {
+  mutation addNote($vendorId: ID!, $author: ID! $noteBody: String!) {
+    addNote(vendorId: $vendorId, author: $author notesBody: $noteBody) {
       _id
       vendorName
       street
@@ -176,6 +176,7 @@ export const ADD_NOTE = gql`
         _id
         notesBody
         createdAt
+        author
       }
     }
   }

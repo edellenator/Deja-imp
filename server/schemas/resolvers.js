@@ -152,10 +152,14 @@ const resolvers = {
             }
             throw new AuthenticationError('Not logged in');
           },
-          addNote: async (parent, { vendorId, notesBody }, context) => {
+          addNote: async (parent, { vendorId, authorId, notesBody }, context) => {
             if(context.user) {
               return Vendor.findByIdAndUpdate({ _id: vendorId },
-                {$addToSet: { notes: { notesBody: notesBody } } },
+                {
+                  $addToSet: { 
+                    notes: { notesBody: notesBody, author: authorId },
+                  }
+                },
                 { new: true, runValidators: true })
                   .select('-__v')
                   .populate('products')
