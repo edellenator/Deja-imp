@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import { Link, useParams } from "react-router-dom";
 import { useQuery, useMutation } from "@apollo/client";
 import ProductList from "../components/ProductList";
-import { QUERY_VENDOR } from "../utils/queries"
+import { QUERY_VENDOR, QUERY_ME } from "../utils/queries"
 import { ADD_NOTE, ADD_CONTACT } from "../utils/mutations"
 
 const Vendor = () => {
@@ -109,14 +109,22 @@ const Vendor = () => {
     //         ]
     //     },
     // ]
-    const {id: _id} = useParams();
-    console.log(_id)
+    const {id: vendorId} = useParams();
+    // console.log(_id)
 
     const { loading, data } = useQuery(QUERY_VENDOR, {
-        variables:{ id: _id }
+        variables:{ id: vendorId }
     })
 
-    const vendor = data?.vendor || {}
+    const { loading: loadMe, data: myData } = useQuery(QUERY_ME);
+
+
+    // Add note and Add contact mutations
+    const [addContact, {error: contactErr}] = useMutation(ADD_CONTACT)
+    const [addNote, {error: noteErr}] = useMutation(ADD_NOTE)
+
+    const vendor = data?.vendor || {};
+    const me = data?.myData || {};
     
     // temp find in array to test useParams data
     // const vendor = vendors.find(vendor => {
@@ -125,27 +133,23 @@ const Vendor = () => {
 
     const [contactFormData, setContactFormData] = useState({
         contactName: "",
-        contactTitle: "",
+        title: "",
         email: "",
-        phone: ""
+        phoneNumber: ""
     })
     const [noteFormData, setNoteFormData] = useState({
-        noteText:"",
-        user: "",
-        dateCreated: "",
+        noteBody:""
     })
 
     const {
         contactName,
-        contactTitle,
+        title,
         email,
-        phone
+        phoneNumber
     } = contactFormData
 
     const {
-        noteText,
-        user,
-        dateCreated
+        noteBody
     } = noteFormData
     
     const handleContactFormChange = (e) => {
@@ -157,8 +161,26 @@ const Vendor = () => {
         console.log(contactFormData);
     };
 
-    const handleContactFormSubmit = (e) => {
+    const handleContactFormSubmit = async (e) => {
         e.preventDefault();
+
+        try {
+            await addContact({
+                variables: {
+                    input: contactFormData, 
+                    vendorId: vendorId
+                }
+            })
+        } catch (contactErr) {
+            console.error(contactErr);
+        };
+
+        setContactFormData({
+            contactName: "",
+            title: "",
+            email: "",
+            phoneNumber: ""
+        });
     };
 
     const handleNoteFormChange = (e) => {
@@ -172,6 +194,19 @@ const Vendor = () => {
 
     const handleNoteFormSubmit = async (e) => {
         e.preventDefault();
+
+        try {
+            await addNote({
+                variables: {
+                    noteBody: noteBody,
+                    vendorId: vendorId
+                }
+            })
+        } catch (noteErr) {
+            console.error(noteErr)
+        }
+
+        setNoteFormData({noteBody: ""})
     };
     
     if (loading) {
@@ -180,7 +215,7 @@ const Vendor = () => {
     
     return (
         <section className="container">
-            {console.log(vendor)}
+            {/* {console.log(vendor)} */}
             <div className="flex-row col-9">
                 <h1 className="col-3">{vendor.name}</h1>
                 <Link to={`/editVendor/${vendor._id}`}>
@@ -203,7 +238,7 @@ const Vendor = () => {
                                 </thead>
                                 <tbody>
                                     {vendor.contact.map((contact) => 
-                                        <tr key={contact.phoneNumber}>
+                                        <tr key={contact._id}>
                                             <td>{contact.contactName}</td>
                                             <td>{contact.title}</td>
                                             <td>{contact.email}</td>
@@ -218,18 +253,18 @@ const Vendor = () => {
                                     <input className="form-input" type="text" name="contactName" value={contactName} onChange={handleContactFormChange}></input>
                                 </div>
                                 <div className="col-auto mr-2">
-                                    <label className="form-label" htmlFor="contact-title">Title</label>
-                                    <input className="form-input" type="text" name="contactTitle" value={contactTitle} onChange={handleContactFormChange}></input>
+                                    <label className="form-label" htmlFor="title">Title</label>
+                                    <input className="form-input" type="text" name="title" value={title} onChange={handleContactFormChange}></input>
                                 </div>
                                 <div className="col-auto mr-2">
                                     <label className="form-label" htmlFor="email">Email</label>
                                     <input className="form-input" type="email" name="email" value={email} onChange={handleContactFormChange}></input>
                                 </div>
                                 <div className="col-auto mr-2">
-                                    <label className="form-label" htmlFor="phone">
+                                    <label className="form-label" htmlFor="phoneNumber">
                                         Phone
                                     </label>
-                                    <input className="form-input" type="tel" name="phone" value={phone} onChange={handleContactFormChange}></input>
+                                    <input className="form-input" type="tel" name="phoneNumber" value={phoneNumber} onChange={handleContactFormChange}></input>
                                 </div>
                                 <button className="btn col-auto" type="submit">Add Contact</button>
                             </form>
@@ -239,12 +274,12 @@ const Vendor = () => {
                 <div className="flex-column col-4 ml-2">
                     <h3>Notes</h3>
                     {vendor.notes.map((note) => 
-                    <div key={note.id} className="card mb-2">
+                    <div key={note._id} className="card mb-2">
                         <div className="card-body">
-                            {note.text}
+                            {note.notesBody}
                         </div>
                         <div className="card-sub">
-                            Submitted by: {note.author} on {note.dateCreated}
+                            Submitted by: {note.author} on {note.createdAt}
                         </div>
                     </div>
                     )}
@@ -252,9 +287,9 @@ const Vendor = () => {
                         <textarea 
                             className="form-textarea" 
                             placeholder="Add a note" 
-                            name="noteText" 
-                            id="noteText"
-                            value={noteText}
+                            name="noteBody" 
+                            id="noteBody"
+                            value={noteBody}
                             onChange={handleNoteFormChange}
                         />
                         <button className="btn">Add Note</button>
