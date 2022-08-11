@@ -32,7 +32,7 @@ If retrieving application code from [github](https://github.com/edellenator/Deja
 
 *note: the server runs locally on port 3001 for the apollo servers and 3000 for the react front end when testing locally*
 
-Otherwise it is deployed at [Heroku](https://deja-imp.herokuapp.com/vendors)
+Otherwise it is deployed at [Heroku](https://deja-imp.herokuapp.com)
 
 ## **Usage**
 
